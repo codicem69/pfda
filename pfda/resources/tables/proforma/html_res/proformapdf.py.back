@@ -1,0 +1,185 @@
+ 
+from gnr.web.gnrbaseclasses import TableScriptToHtml
+
+
+class Main(TableScriptToHtml):
+
+    maintable = 'pfda.proforma'
+    #Non indicheremo una row_table ma solo una maintable perché stamperemo i record della selezione corrente
+    doc_header_height = 153
+    doc_footer_height = 12
+    #grid_header_height = 5
+
+    def docHeader(self, header):
+        layout = header.layout(name='doc_header', margin='5mm', border_width=0)
+
+        row = layout.row()
+        left_cell = row.cell(width=105)
+        #center_cell = row.cell()
+        right_cell = row.cell(width=80)
+      
+        self.datiProforma(left_cell)
+        self.datiCliente(right_cell)
+        layout = header.layout(name='doc_header', margin='0mm', border_width=0)
+        row = layout.row()
+        cell = row.cell(width=188)
+        
+        self.datiProforma2(cell)
+
+    def datiProforma(self, c):
+        l = c.layout('dati_proforma',
+                    lbl_class='cell_label',
+                    border_width=0)
+                
+        r = l.row(height=8)
+        r.cell(self.field('data'), lbl='Date')
+        #r = l.row(height=8)
+        r.cell(self.field('protocollo'), lbl='PFDA no.')
+        r = l.row(height=8)
+        r.cell(self.field('@imbarcazione_id.tipo'), lbl='type') and ' ' and r.cell(self.field('@imbarcazione_id.nome'), lbl='name')
+        #r = l.row(height=2)
+        #r.cell(self.field('@imbarcazione_id.nome'))
+        r = l.row(height=8)
+        r.cell(self.field('@imbarcazione_id.bandiera'), lbl='Flag') and ' ' and r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA')
+        r = l.row(height=8)
+        #r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA')
+        #r = l.row(height=8)
+        r.cell(self.field('@imbarcazione_id.gt'), lbl='GT') and ' ' and r.cell(self.field('@imbarcazione_id.nt'), lbl='NT')
+        #r = l.row(height=8)
+        #r.cell(self.field('@imbarcazione_id.nt'), lbl='NT')
+        r = l.row(height=8)
+        r.cell(self.field('cargo'), lbl='Cargo')
+        #r = l.row(height=8)
+        #r.cell('Pilot ' + self.field('notepilot') + 'Euro ' + self.field('pilot')) 
+        
+        
+        
+        
+
+    def datiCliente(self, c):
+        l = c.layout('dati_cliente', border_width=0)
+        
+        l.row(height=5).cell('Messrs.')
+        l.row(height=5).cell(self.field('@cliente_id.nome'))
+        l.row(height=5).cell(self.field('@cliente_id.indirizzo'))
+        #comune = self.field('@cliente_id.@comune_id.denominazione')
+        #provincia = self.field('@cliente_id.provincia')
+        #l.row(height=5).cell('%s (%s)' % (comune, provincia))
+
+    def datiProforma2(self, header2):
+        layout = header2.layout(
+                            um='mm',top=48,left=1,right=1, bottom=3,
+                            border_width=0,
+                            font_family='Helvetica',
+                            font_size='9pt',
+                            lbl_height=4,
+                            border_color='grey')
+        #layout.row(height=10).cell("<div style='font-size:20pt;padding:5px'><strong>Prodotti Cliente</strong></div>::HTML")
+        righe_proforma2 = layout.row(height=74, lbl_height=4)
+        self.grigliaProforma(righe_proforma2)
+
+    def grigliaProforma(self, row):
+        righeproformaLayout = row.cell().layout(name='datiProforma', um='mm',
+                                    lbl_height=3, style='line-height:5mm;text-indent:2mm;')
+        intestazione = righeproformaLayout.row(height=6)
+        intestazione.cell("Service", width=0, content_class='aligned_center')
+        intestazione.cell("description", width=0, content_class='aligned_center')
+        intestazione.cell("Euro", width=20, content_class='aligned_center')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Harbour Master Dues", width=0)
+        r.cell("", width=0)
+        r.cell(self.field('diritticp'), width=20, content_class='aligned_right') 
+        r = righeproformaLayout.row(height=6) 
+        r.cell("Administration charge", width=0)
+        r.cell("", width=0)
+        r.cell(self.field('admcharge'), width=20, content_class='aligned_right')     
+        r = righeproformaLayout.row(height=6)
+        r.cell("Pilot", width=0)
+        r.cell(self.field('notepilot'), width=0)
+        r.cell(self.field('pilot'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Mooringmen", width=0)
+        r.cell(self.field('notemoor'), width=0)
+        r.cell(self.field('moor'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Tug", width=0)
+        r.cell(self.field('notetug'), width=0)
+        r.cell(self.field('tug'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Agency fees", width=0)
+        r.cell(self.field('noteagency'), width=0)
+        r.cell(self.field('agency'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Customs clearance", width=0)
+        r.cell(self.field('notecustoms'), width=0)
+        r.cell(self.field('customs'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Garbage", width=0)
+        r.cell(self.field('notegarbage'), width=0)
+        r.cell(self.field('garbage'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Dispensation for liquid waste", width=0)
+        r.cell(self.field('noteretaingarbage'), width=0)
+        r.cell(self.field('retaingarbage'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("ISPS", width=0)
+        r.cell(self.field('noteisps'), width=0)
+        r.cell(self.field('isps'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Miscellaneous", width=0)
+        r.cell(self.field('notemisc'), width=0)
+        r.cell(self.field('misc'), width=20, content_class='aligned_right')
+        r = righeproformaLayout.row(height=6)
+        r.cell("Auth. loading/unloading goods in bulk", width=0)
+        r.cell(self.field('notebiulk'), width=0)
+        r.cell(self.field('bulkauth'), width=20, content_class='aligned_right')
+
+        extraservice = self.record['@proforma_servextra']
+        for f in extraservice.values():
+            r = righeproformaLayout.row(height=6)
+            r.cell(self.toText(f['@servizi_id.descrizione']), width=0)
+            r.cell(self.toText(f['descrizione']), width=0)
+            #r.cell(self.field(f['tariffa']), width=20, content_class='aligned_right')
+            r.cell(self.toText(f['tariffa'], format=self.currencyFormat), width=20, content_class='aligned_right')
+
+        r = righeproformaLayout.row(height=6)
+        r.cell("Stamps", width=0)
+        r.cell("", width=0)
+        r.cell(self.field('stamp'), width=20, content_class='aligned_right')
+
+    def defineCustomStyles(self):
+        self.body.style(""".cell_label{
+                            font-size:8pt;
+                            text-align:left;
+                            color:gray;
+                            text-indent:1mm;}
+    
+                            .footer_content{
+                            font-size:12pt;
+                            font_weight=bold;    
+                            text-align:right;
+                            margin:2mm;
+                            }
+                            """)
+
+    def gridStruct(self,struct):
+        r = struct.view().rows()
+        r.fieldcell('servizi_id',mm_width=0, name='Services')
+        r.fieldcell('descrizione',mm_width=0, name='description')
+        r.fieldcell('tariffa',mm_width=20, name='Euro',format='#,###.00')
+        
+
+    def gridQueryParameters(self):
+        return dict(relation='@proforma_servextra')
+        #Nel metodo gridQueryParameters è possibile anche utilizzare le relazioni
+
+    def docFooter(self, footer, lastPage=None):
+        l = footer.layout('totali_fattura',top=1,
+                           lbl_class='cell_label', 
+                           content_class = 'footer_content')
+        r = l.row(height=12)
+        r.cell()
+        r.cell(self.field('totalepfda'),lbl='Total pfda Euro',  width=20)
+        #r.cell(self.field('pilot'),lbl='pilot',  width=20)
+       # r.cell(self.field('totale_fattura'),lbl='Totale',  width=20)
+                                   
