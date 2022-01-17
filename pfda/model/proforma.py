@@ -50,6 +50,7 @@ class Table(object):
         tbl.aliasColumn('nt',name_long='NT',relation_path='@imbarcazione_id.nt')
         tbl.formulaColumn('notestandard',select=dict(table='pfda.notestandard', columns='$descrizione',
                                                         where=''))#'$id=$id'))
+        tbl.aliasColumn('servizio_extra','@proforma_servextra.servizio_extra')
 
     def defaultValues(self,record=None):
         return dict(data = self.db.workdate,

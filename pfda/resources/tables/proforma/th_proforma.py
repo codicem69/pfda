@@ -75,6 +75,7 @@ class ViewProforma(BaseComponent):
         r.fieldcell('misc')
         r.fieldcell('bulkauth')
         r.fieldcell('antifire',width='5em')
+        r.fieldcell('servizio_extra',width='30em')
         r.fieldcell('tot_servextra',width='7em')
         r.fieldcell('diritticp')
         r.fieldcell('admcharge',width='7em')
