@@ -6,7 +6,7 @@ class Main(TableScriptToHtml):
     #page_width = 210
     #page_height = 297
     maintable = 'pfda.proforma'
-    virtual_columns = '$notestandard'
+    #virtual_columns = '$notestandard'
     #Con virtual_columns aggiungo a self.record anche le formulaColumn calcolate che altrimenti di default non verrebbero compilate 
     
     

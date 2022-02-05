@@ -6,4 +6,3 @@ class Table(object):
         tbl =  pkg.table('tariffeportuali',pkey='id',name_long='tariffeportuali',name_plural='tariffeportuali',caption_field='descrizione')
         self.sysFields(tbl)
         tbl.column('descrizione',name_long='descrizione')
-        tbl.column('file_url',name_long='Url File')

@@ -9,14 +9,14 @@ class View(BaseComponent):
     def th_struct(self,struct):
         r = struct.view().rows()
         r.fieldcell('tipo')
-        r.fieldcell('nome')
+        r.fieldcell('nome',width='20em')
         r.fieldcell('bandiera')
         r.fieldcell('loa')
         r.fieldcell('gt')
         r.fieldcell('nt')
 
     def th_order(self):
-        return 'tipo'
+        return 'nome'
 
     def th_query(self):
         return dict(column='nome', op='contains', val='')

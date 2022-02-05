@@ -34,7 +34,8 @@ class ViewFromTug(BaseComponent):
                                             condition=":cod is NULL OR :cod = ''  OR $codice LIKE :cod",
                                             condition_cod='%tug%',
                                             hasDownArrow=True))
-        r.fieldcell('quantita',edit=dict(remoteRowController=True))#, edit=True)
+        r.fieldcell('numero_tug',edit=dict(remoteRowController=True))
+        r.fieldcell('quantita',name='Num.prestazioni',width='9em',edit=dict(remoteRowController=True))#, edit=True)
         r.fieldcell('ovt',edit=dict(remoteRowController=True))#, edit=True)
         r.fieldcell('pu')
         r.fieldcell('tottug', totalize=True)
@@ -47,6 +48,8 @@ class ViewFromTug(BaseComponent):
             return row
         if not row['quantita']:
             row['quantita'] = 1
+        if not row['numero_tug']:
+            row['numero_tug'] = 1    
         if not row['ovt']:
             row['ovt'] = 0    
         if field == 'tariffe_id':
@@ -56,7 +59,7 @@ class ViewFromTug(BaseComponent):
         #pu=row['pu']
     
         #totprest = decimalRound(qt * pu)
-        totprest = decimalRound(row['quantita'] * row['pu'] )
+        totprest = decimalRound(row['quantita'] * row['numero_tug'] * row['pu'] )
         ovt = decimalRound(old_div(row['ovt'] * totprest,100))
         row['tottug'] = decimalRound(totprest + ovt)
         return row

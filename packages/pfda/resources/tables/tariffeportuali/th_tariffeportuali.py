@@ -8,8 +8,8 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('descrizione')
-        r.fieldcell('file_url')
+        r.fieldcell('descrizione',width='50em')
+
 
     def th_order(self):
         return 'descrizione'

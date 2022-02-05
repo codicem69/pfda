@@ -5,6 +5,9 @@ from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
 from gnr.core.gnrnumber import decimalRound
 from gnr.core.gnrbag import Bag
+from gnr.web.gnrbaseclasses import TableTemplateToHtml
+from datetime import datetime
+from gnr.core.gnrlang import GnrException
 
 class View(BaseComponent):
 
@@ -39,15 +42,14 @@ class View(BaseComponent):
         r.fieldcell('admcharge')
         r.fieldcell('stamp')
         r.fieldcell('totalepfda')
+        
 
     def th_order(self):
-        return 'protocollo'
+        return 'protocollo:d'
 
     def th_query(self):
         return dict(column='protocollo', op='contains', val='')
 
-    def th_order(self):
-        return 'proforma_id'
 
     def th_query(self):
         return dict(column='id', op='contains', val='')
@@ -57,8 +59,8 @@ class ViewProforma(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('protocollo')
-        r.fieldcell('data')
+        r.fieldcell('protocollo',width='8em')
+        r.fieldcell('data',width='5em')
         r.fieldcell('cliente_id')
         r.fieldcell('imbarcazione_id')
         r.fieldcell('cargo')
@@ -66,32 +68,41 @@ class ViewProforma(BaseComponent):
         r.fieldcell('moor')
         r.fieldcell('tug')
         r.fieldcell('agency')
-        r.fieldcell('customs')
+        r.fieldcell('customs',width='7em')
         r.fieldcell('garbage')
         r.fieldcell('retaingarbage')
-        r.fieldcell('isps')
+        r.fieldcell('isps',width='5em')
         r.fieldcell('misc')
         r.fieldcell('bulkauth')
+        r.fieldcell('antifire',width='5em')
+        r.fieldcell('tot_servextra',width='7em')
         r.fieldcell('diritticp')
-        r.fieldcell('admcharge')
+        r.fieldcell('admcharge',width='7em')
         r.fieldcell('stamp')
-        r.fieldcell('totalepfda')
-
+        r.fieldcell('totalepfda', background='lightyellow',font_weight='bold')
+        r.fieldcell('timbro')
+        r.fieldcell('pathtopdf')
+        #con la riga sottostante visualizziamo un bottone che ci fa aprire il pdf contenuto nel pathtopdf
+        #r.fieldcell('pathtopdf', width='12em', template="""<button onclick="window.open('/_storage/home/proforma_ranalli/#');">proforma</button>""")
+        #con la riga sottostante visualizziamo una lente d'ingradimento che ci fa aprire il pdf contenuto nel pathtopdf
+        r.cell('apri tab', name="Proforma", width='5em', cellClasses='cellbutton',
+               format_buttonclass='icnBaseLens buttonIcon',
+               format_isbutton=True, format_onclick="""var row = this.widget.rowByIndex($1.rowIndex);
+               genro.childBrowserTab('/_storage/home/proforma_ranalli/'+row['pathtopdf'].trim());""")
+        
     def th_order(self):
-        return 'protocollo'
+        return 'protocollo:d'
 
     def th_query(self):
         return dict(column='protocollo', op='contains', val='')
 
-    def th_order(self):
-        return 'proforma_id'
+ 
 
     def th_query(self):
-        return dict(column='id', op='contains', val='')
-
-    
+        return dict(column='id', op='contains', val='')    
 
 class Form(BaseComponent):
+
     #definiamo la form con la parte superiore e una parte inferiore
     def th_form(self, form):
         bc = form.center.borderContainer()
@@ -135,7 +146,7 @@ class Form(BaseComponent):
         bc.contentPane(region='center').linkerBox('cliente_id',margin='2px',openIfEmpty=True, validate_notnull=True,
                                                     columns='$nome,$indirizzo',
                                                     auxColumns='$email',
-                                                    newRecordOnly=True,formResource='Form',
+                                                    newRecordOnly=False,formResource='Form',
                                                     dialog_height='100px',dialog_width='600px')
         left = bc.roundedGroup(title='Dati proforma',region='left',width='65%')
         fb = left.formbuilder(cols=2, border_spacing='4px')
@@ -147,6 +158,8 @@ class Form(BaseComponent):
         fb.field('nt',width='7em')
         fb.field('loa',width='7em')
         fb.field('cargo',width='28em' )
+       
+        
     
     
     def proformaDett(self,bc):
@@ -165,7 +178,7 @@ class Form(BaseComponent):
         fb.field('noteagency',width='20em' )
         fb.field('customs',width='5em' )
         fb.field('notecustoms',width='20em' )
-        fb.field('garbage',width='5em', default_value=190)
+        fb.field('garbage',width='5em')#, default_value=450)
         fb.field('notegarbage',width='20em' )
         fb.field('retaingarbage',width='5em' )
         fb.field('noteretaingb',lbl='note Garb.auth',width='20em' )
@@ -175,6 +188,13 @@ class Form(BaseComponent):
         fb.field('notemisc',width='20em' )
         fb.field('bulkauth',width='5em' )
         fb.field('notebulk',width='20em' )
+        fb.field('antifire',width='5em' )
+        fb.field('noteantifire',width='20em' )
+        fb.field('tot_servextra',width='5em' )
+        fb.br()
+        fb.dbSelect(dbtable='pfda.tributicp',lbl='Scelta TributiCP',auxColumns='$descrizione,$importo',
+                    selected_importo='.diritticp',
+                        hasDownArrow=True)
         fb.field('diritticp',width='5em',
                     tooltip="""Sotto GT 250 € 31,00 - da GT 250 in su € 62,00 - Petroliere o Merce pericolosa il Doppio della Tariffa""" )
         fb.br()
@@ -182,15 +202,21 @@ class Form(BaseComponent):
         fb.br()
         fb.field('stamp',width='5em' )
         fb.field('totalepfda',width='10em',lbl_font_weight='bold',font_weight='bold' )
-        #fb.numberTextBox('^.totalepfda',lbl='Totale pfda',readOnly=True,width='10em')
+        fb.numberTextBox('^.totalepfda',lbl='Totale pfda',readOnly=True,width='10em')
+        fb.checkbox(value='^.timbro', lbl='Timbro Società: ', label='Confermato')
 
-        fb.dataFormula('^.totalepfda','a+b+c+d+e+f+g+h+i+l+m+n+o', a='^.pilot', b='^.moor', c='^.tug', d='^.agency', e='^.customs', 
+
+
+        
+
+        fb.dataFormula('^.totalepfda','a+b+c+d+e+f+g+h+i+l+m+n+o+p+q', a='^.pilot', b='^.moor', c='^.tug', d='^.agency', e='^.customs', 
                                         f='^.garbage', g='^.retaingarbage', h='^.isps', i='^.misc', l='^.bulkauth', 
-                                        m='^.diritticp', n='^.admcharge', o='^.stamp' )
+                                        m='^.diritticp', n='^.antifire', o='^.tot_servextra', p='^.admcharge', q='^.stamp' )
 
            
         # creiamo un bottone che inserisce i valori fissi prelevandoli dai valori inseriti nelle preference di sistema
-        fb.button('Inserisci',lbl='Inserisci Tariffe Standard',action="""SET .garbage = garb;
+        fb.br()
+        fb.button('Inserisci',lbl='Tariffe Standard',action="""SET .garbage = garb;
                                                                          SET .retaingarbage = retaingarb;
                                                                          SET .isps = security;
                                                                          SET .misc = varie;
@@ -203,7 +229,77 @@ class Form(BaseComponent):
                     varie='=gnr.app_preference.pfda.misc_df',
                     ntmisc='=gnr.app_preference.pfda.notemisc_df',
                     bulkaut='=gnr.app_preference.pfda.bulkauth_df')
-    
+        fb.br()
+        fb.div(' ')
+        
+        #fb.Button('Invia Email',lbl='Invia Email',fire='send_email')
+        email_account_id = self.db.application.getPreference('mail.account_id',pkg='pfda')
+        email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
+
+        btn = fb.Button('Crea Email',lbl='Email Proforma')
+        btn.dataRpc(None, self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
+                   record='=#FORM.record.id',
+                   email_account_id=email_account_id,
+                   email_template_id=email_template_id)
+        
+        # qua verifichiamo di aver settato nelle preferenze del proforma l'account email e il template da utilizzare
+        # nel caso  saremo avvisati da un msg alert
+        if (email_account_id and email_template_id) == None:
+            #raise GnrException('purtroppo manca questa cosa ')
+            fb.data('.messaggio_speciale', "Verifica di aver inserito nelle preferenze globali \n l'account email e il template da utilizzare per l'invio dell'email")
+            fb.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
+           
+           # se al posto dell'alert volevamo inserire un div
+           #fb.div(' ')
+           #fb.div("Verifica di aver inserito nelle preferenze globali <br/> l'account email e il template da utilizzare per l'invio dell'email",
+           #      color='white',
+           #      background='red',
+           #      font_size='12px',
+           #      font_weight='bold',
+           #      margin='5px', border='2px solid yellow',
+           #      text_align='center',
+           #      padding='4px',
+           #      shadow='3px 3px 6px silver')
+
+
+
+       #fb.dataRpc(None, self.invia_proforma,#self.db.table('pfda.proforma').invia_proforma,
+       #           record='=#FORM.record.id',
+       #           template='test',
+       #           _fired='^send_email')
+        
+       #fb.dataRpc(None, self.invia_proforma,#self.db.table('pfda.proforma').invia_proforma,
+       #           record='=#FORM.record.id',
+       #           template='#FORM.Stampa Prof',
+       #           _fired='^send_email')
+        
+   #@public_method
+   #def invia_proforma(self, record, resultAttr=None, **kwargs):
+   #    
+   #    htmlbuilder = page.loadTableScript(self, 'html_res/stampa_prof')
+   #    htmlbuilder(record =record,pdf=True)
+
+   #@public_method
+   #def invia_proforma(self, record, resultAttr=None, **kwargs):
+   #    # Crea stampa
+   #   # print(ciao)
+   #    tbl_proforma = self.db.table('pfda.proforma')
+   #    #if not record['protocollo']:
+   #    #    return
+   #        
+   #    
+   #    builder = TableTemplateToHtml(table=tbl_proforma)
+   #    nome_template = 'pfda.proforma:Stampa Prof'
+   #    nome_file = 'proforma_{cl_id}.pdf'.format(
+   #                cl_id=record['id'])
+   #    template = self.loadTemplate(nome_template)  # nome del template
+   #    pdfpath = self.site.storageNode('home:stampe_laboratorio', nome_file)
+   #    pdfpath_st = self.site.storageNode('home:proforma', nome_file_st) # (pdfpath.internal_path)
+   #    builder(record=record, template=template)
+   #    result = builder.writePdf(pdfpath=pdfpath)
+   #    result = builder.writePdf(pdfpath=pdfpath_st)
+   #    self.setInClientData(path='gnr.clientprint',
+   #                         value=result.url(timestamp=datetime.now()), fired=True)
     # ---------------------    
     # prelevare dati avendo un record specifico e inserirli nei campi tramite bottone            
     #    fb.Button('Inserisci',lbl='Inserisci Tariffe Standard',fire='preleva')
@@ -214,9 +310,7 @@ class Form(BaseComponent):
     #        var garbval=genro.getData('risultato_rpc.record.garbageval')
     #        genro.setData('pfda_proforma.form.record.garbage',garbval)
     #        var garbret=genro.getData('risultato_rpc.record.retaingarbage')
-    #        genro.setData('pfda_proforma.form.record.retaingarbage',garbret)
-    #        var ispsv=genro.getData('risultato_rpc.record.ispsval')
-    #        genro.setData('pfda_proforma.form.record.isps',ispsv)
+    #        genro.setData('pfda_prof=#FORM.pkeyforma.form.record.isps',ispsv)
     #        var miscv=genro.getData('risultato_rpc.record.miscval')
     #        genro.setData('pfda_proforma.form.record.misc',miscv)
     #        var bulkv=genro.getData('risultato_rpc.record.bulkval')
@@ -278,7 +372,7 @@ class Form(BaseComponent):
     #        result['nuovo'] = 'Nuovo'
     #    return result    
     #-----------------------------
-
+   
     def CostiOrm(self,pane):
         #rightbc = bc.roundedGroup(title='Costi Ormegg')
         #fb = rightbc.formbuilder(cols=2, border_spacing='4px')
@@ -286,7 +380,7 @@ class Form(BaseComponent):
         pane.inlineTableHandler(relation='@proforma_orm',viewResource='ViewFromOrmeggiatori')
 
     def CostiPilota(self,pane):
-        #rightbc = bc.roundedGroup(title='Costi Pilota')
+        #rightbc = bc.roundedGroup(title='Cosmail.account_idti Pilota')
         #fb = rightbc.formbuilder(cols=2, border_spacing='4px')
         #fb.field('pilot',width='5em' )
         pane.inlineTableHandler(relation='@proforma_pilota',viewResource='ViewFromPilot')                           
@@ -316,8 +410,80 @@ class Form(BaseComponent):
     #def NoteProforma(self,bc):
         #bc.roundedGroup(title='Extra',value='^.noteproforma',editor=True)
 
-    def th_hiddencolumns(self):
-            return "$garbageval"
+    #def th_hiddencolumns(self):
+     #       return "$garbageval"
 
+    def th_bottom_custom(self, bottom):
+        bar = bottom.slotBar('10,stampa_proforma,*,10')
+        bar.stampa_proforma.button('Stampa Proforma', iconClass='print',
+                                    action="""genro.publish("table_script_run",{table:"pfda.proforma",
+                                                                               res_type:'print',
+                                                                               resource:'stampa_prof',
+                                                                               pkey: pkey})""",
+                                                                               pkey='=#FORM.pkey') 
+        
+       #bar.dataRpc('.now', self.db.table('email.message').newMessageFromUserTemplate(
+       #                                               record_id='id',
+       #                                               table='pfda.proforma',
+       #                                               to_address='info@ranalli.com',
+       #                                               template_code='test'), _fired='^.email_proforma')
+       #bar.email_proforma.button('Email Proforma',self.db.table('email.message').newMessageFromUserTemplate(
+       #                                                record_id='id',
+       #                                                table='pfda.proforma',
+       #                                                to_address='info@ranalli.com',
+       #                                                template_code='test'))
+        
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px' )
+
+   #@public_method
+   #def email_proforma(self):
+   #    self.db.table('email.message').newMessageFromUserTemplate(
+   #                                                   record_id='$id',
+   #                                                   table='pfda.proforma',
+   #                                                   to_address='info@ranalli.com',
+   #                                                   template_code='test')
+   #    print(c)
+    
+    @public_method
+    def invia_proforma(self, record,email_account_id,email_template_id, **kwargs):
+        tbl_proforma = self.db.table('pfda.proforma')
+        if not record: 
+            return
+
+        self.db.table('email.message').newMessageFromUserTemplate(
+                                                      record_id=record,
+                                                      table='pfda.proforma',
+                                                      account_id = email_account_id,
+                                                      template_id=email_template_id)
+        
+        self.db.commit()
+
+    def invia_proforma2(self, record, resultAttr=None, **kwargs):
+       
+        # Crea stampa   
+        #print(ciao)
+        tbl_proforma = self.db.table('pfda.proforma')
+        if not record: 
+            return
+        builder = TableTemplateToHtml(table=tbl_proforma)   
+        
+        nome_template = 'pfda.template:test'
+        #nome_template = 'pfda.proforma:test'
+        
+        prot_proforma = self.db.table('pfda.proforma').readColumns(columns='$protocollo', where='$id=:f_id', f_id=record)
+        prot_proforma = prot_proforma.replace("/", "_")
+        nome_file = '{cl_id}.pdf'.format(
+                    cl_id=prot_proforma[:-1])#record[0:])
+        template = self.loadTemplate(nome_template)  # nome del template
+        print(ciao)
+        pdfpath = self.site.storageNode('home:proforma_ranalli', nome_file)
+        #pdfpath_st = self.site.storageNode('home:proforma', nome_file_st) # (pdfpath.internal_path)
+        builder(record=record, template=template)
+        result = builder.writePdf(pdfpath=pdfpath)
+        #result = builder.writePdf(pdfpath=pdfpath_st)
+        #print(ciao)
+        self.setInClientData(path='gnr.clientprint',
+                             value=result.url(timestamp=datetime.now()), fired=True)
+    
+    

@@ -9,4 +9,27 @@ class Table(object):
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('ore',dtype='N',size='3',name_long='n. Ore')
         tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')
-        tbl.column('totantifire',dtype='N',size='10,2',name_long='Totale Tug',format='#,###.00')
+        tbl.column('totantifire',dtype='N',size='10,2',name_long='Totale Antifire',format='#,###.00')
+
+    def aggiornaAntifire(self,record):
+        proforma_id = record['proforma_id']
+        self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaAntifire,
+                                    proforma_id=proforma_id,
+                                    _deferredId=proforma_id)
+
+    #def trigger_onInserting(self, record):
+    #    self.aggiornaPilota(record)
+
+    #def trigger_onUpdating(self, record):
+    #    self.aggiornaPilota(record)
+
+    def trigger_onInserted(self,record=None):
+        self.aggiornaAntifire(record)
+
+    def trigger_onUpdated(self,record=None,old_record=None):
+        self.aggiornaAntifire(record)
+
+    def trigger_onDeleted(self,record=None):
+        if self.currentTrigger.parent:
+            return
+        self.aggiornaAntifire(record) 
