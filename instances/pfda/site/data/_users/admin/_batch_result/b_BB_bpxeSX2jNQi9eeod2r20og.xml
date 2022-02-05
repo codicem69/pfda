@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<GenRoBag><title>Stampa Prof</title>
-<batch_id>BB_bpxeSX2jNQi9eeod2r20og</batch_id>
-<owner_page_id>ghPnzMQ7O0icNLx_ZouC_w</owner_page_id>
-<note _T="NN"></note>
-<start_ts _T="DH">2021-05-12T17:44:01.799973+02:00</start_ts>
-<end_ts _T="DH">2021-05-12T17:44:02.911922+02:00</end_ts>
-<time_delta>0:00:01</time_delta>
-<result url="/_user/admin/output/pdf/proforma_pfda21000001.pdf?download=True&amp;mtime=1620834243" document_name="proforma_pfda21000001" url_print='javascript:genro.openWindow("/_user/admin/output/pdf/proforma_pfda21000001.pdf?mtime=1620834243","proforma_pfda21000001");' autoDestroy="600::L"></result></GenRoBag>

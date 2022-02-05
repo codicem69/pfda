@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<GenRoBag><title>Stampa Proforma</title>
-<batch_id>BB_lyNGA5SqMUWy1_1fCILEQQ</batch_id>
-<owner_page_id>l6p0skVONNW5jDXALnKQ1Q</owner_page_id>
-<note _T="NN"></note>
-<start_ts _T="DH">2021-05-10T14:54:37.670873+02:00</start_ts>
-<end_ts _T="DH">2021-05-10T14:54:38.528575+02:00</end_ts>
-<time_delta>0:00:00</time_delta>
-<result url="/_user/admin/output/pdf/proforma_.pdf?download=True&amp;mtime=1620651278" document_name="proforma_" url_print='javascript:genro.openWindow("/_user/admin/output/pdf/proforma_.pdf?mtime=1620651278","proforma_");' autoDestroy="600::L"></result></GenRoBag>
