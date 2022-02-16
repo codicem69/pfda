@@ -10,8 +10,9 @@ class Table(object):
         tbl.column('descrizione',name_long='Descrizione')
         tbl.column('tariffa',dtype='N',size='10,2',name_long='Tariffa',format='#,###.00')
         tbl.aliasColumn('descrizione_servizio','@servizi_id.descrizione')
+        tbl.formulaColumn('servizio_extra',"@servizi_id.descrizione || ' ' || coalesce($descrizione, '') || ' € ' || $tariffa", dtype='T')
         tbl.formulaColumn('serv_extra',"@servizi_id.descrizione || ' ' || coalesce($descrizione, '')")
-        
+
     def aggiornaServExtra(self,record):
         proforma_id = record['proforma_id']
         self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServExtra,
