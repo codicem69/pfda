@@ -8,7 +8,7 @@ class Table(object):
     def config_db(self,pkg):
         tbl =  pkg.table('proforma',pkey='id',name_long='proforma',name_plural='proforma',caption_field='protocollo')
         self.sysFields(tbl)
-        tbl.column('protocollo',size='14',name_long='Protocollo')
+        tbl.column('protocollo',size='13',name_long='Protocollo')
         tbl.column('data',dtype='D',name_long='Data')
         tbl.column('cliente_id',size='22',name_long='Cliente').relation('cliente.id',relation_name='cliente', mode='foreignkey', onDelete='raise')
         tbl.column('imbarcazione_id',size='22',name_long='Imbarcazione').relation('imbarcazione.id',relation_name='proforma_imb', mode='foreignkey', onDelete='raise')
