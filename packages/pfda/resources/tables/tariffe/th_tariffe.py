@@ -26,10 +26,10 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
-        fb.field('codice' )
-        fb.field('descrizione', width='30em' )
-        fb.field('valore' )
-        fb.field('tariffa_tipo_id' )
+        fb.field('codice' ,validate_notnull=True)
+        fb.field('descrizione',validate_notnull=True, width='30em' )
+        fb.field('valore' ,validate_notnull=True)
+        fb.field('tariffa_tipo_id' ,tag='hdbselect',validate_notnull=True,colspan=2, lbl='Tariffa Tipo')
 
 
     def th_options(self):
