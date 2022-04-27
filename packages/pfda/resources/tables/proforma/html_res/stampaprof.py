@@ -68,7 +68,7 @@ class Main(TableScriptToHtml):
         l = c.layout('dati_cliente', border_width=0)
         
         l.row(height=5).cell('Messrs.', font_weight= 'bold')
-        l.row(height=5).cell(self.field('@cliente_id.nome'), font_weight= 'bold', font_size='10pt')
+        l.row(height=10).cell(self.field('@cliente_id.nome'), font_weight= 'bold', font_size='10pt')
         l.row(height=5).cell(self.field('@cliente_id.indirizzo'), font_weight= 'bold', font_size='10pt')
         #comune = self.field('@cliente_id.@comune_id.denominazione')
         #provincia = self.field('@cliente_id.provincia')
