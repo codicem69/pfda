@@ -31,9 +31,9 @@ class Form(BaseComponent):
         fb.field('tipo' )
         fb.field('nome' )
         fb.field('bandiera' )
-        fb.field('loa' )
-        fb.field('gt' )
-        fb.field('nt' )
+        fb.field('loa',validate_regex=" ^[0-9,]*$",validate_regex_error='Insert only numbers and comma', placeholder='eg: 10 or 10,50' )
+        fb.field('gt',validate_regex=" ^[0-9,]*$",validate_regex_error='Insert only numbers and comma', placeholder='eg:1200 or 1200,00' )
+        fb.field('nt' ,validate_regex=" ^[0-9,]*$",validate_regex_error='Insert only numbers and comma', placeholder='eg:650 or 650,00')
 
 
     def th_options(self):

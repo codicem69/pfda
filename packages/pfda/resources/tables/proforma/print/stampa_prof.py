@@ -41,7 +41,7 @@ class Main(BaseResourcePrint):
         #self.outputFileNode(page)
         id_record = record['id']
         percorso_pdf = pdfpath.internal_path
-        
+        #result = builder.writePdf(pdfpath=pdfpath)
        #if percorso_pdf is not None:
        #
        #    record['pathtopdf'] = percorso_pdf

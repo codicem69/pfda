@@ -116,7 +116,7 @@ class Form(BaseComponent):
         #qui sotto bcbmain se voglio inserire un'area nella parte in basso del proforma 
         #bcbmain = bc.borderContainer(region='bottom', height='10%',splitter=True)#.tabContainer(region='center',margin='2px')
 
-        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='120px'))
+        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='140px'))
         self.proformaDett(bc.borderContainer(region='center',datapath='.record'))
 
         bc = bc.borderContainer(region='right', width='50%', splitter=True)#.borderContainer(region='top', height='50%')
@@ -209,7 +209,7 @@ class Form(BaseComponent):
 
         
 
-        fb.dataFormula('^.totalepfda','a+b+c+d+e+f+g+h+i+l+m+n+o+p+q', a='^.pilot', b='^.moor', c='^.tug', d='^.agency', e='^.customs', 
+        fb.dataFormula('^.totalepfda','a+b+c+d+e+f+g+h+i+l+m+n+o+p+q', a='^.pilot', b='^.moor', c='^.tug', d='^.agency', e='^.customs',
                                         f='^.garbage', g='^.retaingarbage', h='^.isps', i='^.misc', l='^.bulkauth', 
                                         m='^.diritticp', n='^.antifire', o='^.tot_servextra', p='^.admcharge', q='^.stamp' )
 
