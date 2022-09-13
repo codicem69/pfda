@@ -17,5 +17,6 @@ class Menu(object):
         proforma_da.thpage(u"customs", table="pfda.customs", tags="")
         proforma_da.thpage(u"Adm Charge", table="pfda.admcharge", tags="")
         proforma_da.thpage(u"Antifire", table="pfda.antifire", tags="")
+        proforma_da.thpage(u"File for email", table="pfda.fileforemail", tags="")
         proforma_da.lookups(u"Tabelle Ausiliarie", lookup_manager="pfda")
 

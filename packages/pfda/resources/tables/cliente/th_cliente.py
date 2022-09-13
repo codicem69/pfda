@@ -51,7 +51,7 @@ class FormCliente(BaseComponent):
         
     def th_form(self,form):
         bc = form.center.borderContainer()
-        self.datiCliente(bc.roundedGroupFrame(title='Dati cliente',region='top',datapath='.record',height='185px'))
+        self.datiCliente(bc.roundedGroupFrame(title='Dati cliente',region='top',datapath='.record',height='185px', splitter=True))
         tc = bc.tabContainer(region = 'center',margin='2px')
         self.proformaCliente(tc.contentPane(title='Proforma'))
         self.noteCliente(tc.contentPane(title='Note',datapath='.record'))

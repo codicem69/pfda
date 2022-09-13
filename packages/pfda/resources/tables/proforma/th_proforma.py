@@ -91,7 +91,7 @@ class ViewProforma(BaseComponent):
                genro.childBrowserTab('/_storage/home/proforma_ranalli/'+row['pathtopdf'].trim());""")
         
     def th_order(self):
-        return 'protocollo:d'
+        return 'data:d'
 
     def th_query(self):
         return dict(column='protocollo', op='contains', val='')
@@ -237,11 +237,11 @@ class Form(BaseComponent):
         email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
 
         btn = fb.Button('Crea Email',lbl='Email Proforma')
-        btn.dataRpc(None, self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
-                   record='=#FORM.record.id',
+        btn.dataRpc('msg_special', self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
+                   record='=#FORM.record',
                    email_account_id=email_account_id,
                    email_template_id=email_template_id)
-        
+        fb.dataController("""if(msgspec=='proforma') genro.publish("floating_message",{message:msg_txt, messageType:"message"});""",msgspec='^msg_special', msg_txt = 'Email ready to be sent')
         # qua verifichiamo di aver settato nelle preferenze del proforma l'account email e il template da utilizzare
         # nel caso  saremo avvisati da un msg alert
         if (email_account_id and email_template_id) == None:
@@ -263,115 +263,7 @@ class Form(BaseComponent):
 
 
 
-       #fb.dataRpc(None, self.invia_proforma,#self.db.table('pfda.proforma').invia_proforma,
-       #           record='=#FORM.record.id',
-       #           template='test',
-       #           _fired='^send_email')
-        
-       #fb.dataRpc(None, self.invia_proforma,#self.db.table('pfda.proforma').invia_proforma,
-       #           record='=#FORM.record.id',
-       #           template='#FORM.Stampa Prof',
-       #           _fired='^send_email')
-        
-   #@public_method
-   #def invia_proforma(self, record, resultAttr=None, **kwargs):
-   #    
-   #    htmlbuilder = page.loadTableScript(self, 'html_res/stampa_prof')
-   #    htmlbuilder(record =record,pdf=True)
-
-   #@public_method
-   #def invia_proforma(self, record, resultAttr=None, **kwargs):
-   #    # Crea stampa
-   #   # print(ciao)
-   #    tbl_proforma = self.db.table('pfda.proforma')
-   #    #if not record['protocollo']:
-   #    #    return
-   #        
-   #    
-   #    builder = TableTemplateToHtml(table=tbl_proforma)
-   #    nome_template = 'pfda.proforma:Stampa Prof'
-   #    nome_file = 'proforma_{cl_id}.pdf'.format(
-   #                cl_id=record['id'])
-   #    template = self.loadTemplate(nome_template)  # nome del template
-   #    pdfpath = self.site.storageNode('home:stampe_laboratorio', nome_file)
-   #    pdfpath_st = self.site.storageNode('home:proforma', nome_file_st) # (pdfpath.internal_path)
-   #    builder(record=record, template=template)
-   #    result = builder.writePdf(pdfpath=pdfpath)
-   #    result = builder.writePdf(pdfpath=pdfpath_st)
-   #    self.setInClientData(path='gnr.clientprint',
-   #                         value=result.url(timestamp=datetime.now()), fired=True)
-    # ---------------------    
-    # prelevare dati avendo un record specifico e inserirli nei campi tramite bottone            
-    #    fb.Button('Inserisci',lbl='Inserisci Tariffe Standard',fire='preleva')
-        
-    #    fb.dataRpc('risultato_rpc', self.preleva,_fired='^preleva')
-    
-    #    fb.dataController("""
-    #        var garbval=genro.getData('risultato_rpc.record.garbageval')
-    #        genro.setData('pfda_proforma.form.record.garbage',garbval)
-    #        var garbret=genro.getData('risultato_rpc.record.retaingarbage')
-    #        genro.setData('pfda_prof=#FORM.pkeyforma.form.record.isps',ispsv)
-    #        var miscv=genro.getData('risultato_rpc.record.miscval')
-    #        genro.setData('pfda_proforma.form.record.misc',miscv)
-    #        var bulkv=genro.getData('risultato_rpc.record.bulkval')
-    #        genro.setData('pfda_proforma.form.record.bulkauth',bulkv)
-    #        var notemiscv=genro.getData('risultato_rpc.record.notemiscval')
-    #        genro.setData('pfda_proforma.form.record.notemisc',notemiscv);
-    #        alert("Inserito - Ricordati di salvare");""",fired='^risultato_rpc')
-
-    
-    
-    #@public_method
-    #def preleva(self):
-    #    result = Bag()
-    #    tbl_valorifissi = self.db.table('pfda.valorifissi')
-    #    dati_fissi = tbl_valorifissi.record('xAU5beK_P0SJqcqpdOeq6A').output('dict')
-    #    if dati_fissi:
-    #        result['record'] = Bag(dict(garbageval=dati_fissi['garbageval'],
-    #                                    retaingarbage=dati_fissi['retaingarbval'],
-    #                                    ispsval=dati_fissi['ispsval'],
-    #                                    miscval=dati_fissi['miscval'],
-    #                                    bulkval=dati_fissi['bulkval'],
-    #                                    notemiscval=dati_fissi['notemiscval']))
-    #        result['ok'] = 'Trovato'
-    #    else:
-    #        result['nuovo'] = 'Nuovo'
-    #    return result    
-
-    #---------------------------------
-    #@public_method
-    #def preleva(self, f=None):
-    #        f=self.db.table('pfda.valorifissi').query(columns='$garbageval').fetch()
-    #        return f[0]
-
-    # -------------------------------
-    #    fb.dataRpc('dummy', self.cercaValorifissi,
-    #                garbageval='^.garbageval',
-    #                _if='garbageval&&this.form.isNewRecord()',
-    #                _userChanges=True,
-    #                _onResult="""if(result.getItem('ok')){
-    #                                var record = GET #FORM.record;
-    #                                record.update(result.getItem('record'));
-    #                            };
-    #                """)      
-    
-    #@public_method
-    #def cercaValorifissi(self, garbageval=None):
-    #    result = Bag()
-    #    tbl_valorifissi = self.db.table('pfda.valorifissi')
-    #    dati_fissi = tbl_valorifissi.record(
-    #        garbageval=garbageval, ignoreMissing=True).output('dict')
-    #    if dati_fissi:
-    #        result['record'] = Bag(dict(retaingarbage=dati_fissi['retaingarbval'],
-    #                                    isps=dati_fissi['ispsval'],
-    #                                    misc=dati_fissi['miscval'],
-    #                                    bulkauth=dati_fissi['bulkval'],
-    #                                    notemisc=dati_fissi['notemiscval']))
-    #        result['ok'] = 'Trovato'
-    #    else:
-    #        result['nuovo'] = 'Nuovo'
-    #    return result    
-    #-----------------------------
+     
    
     def CostiOrm(self,pane):
         #rightbc = bc.roundedGroup(title='Costi Ormegg')
@@ -422,42 +314,44 @@ class Form(BaseComponent):
                                                                                pkey: pkey})""",
                                                                                pkey='=#FORM.pkey') 
         
-       #bar.dataRpc('.now', self.db.table('email.message').newMessageFromUserTemplate(
-       #                                               record_id='id',
-       #                                               table='pfda.proforma',
-       #                                               to_address='info@ranalli.com',
-       #                                               template_code='test'), _fired='^.email_proforma')
-       #bar.email_proforma.button('Email Proforma',self.db.table('email.message').newMessageFromUserTemplate(
-       #                                                record_id='id',
-       #                                                table='pfda.proforma',
-       #                                                to_address='info@ranalli.com',
-       #                                                template_code='test'))
+
         
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px' )
 
-   #@public_method
-   #def email_proforma(self):
-   #    self.db.table('email.message').newMessageFromUserTemplate(
-   #                                                   record_id='$id',
-   #                                                   table='pfda.proforma',
-   #                                                   to_address='info@ranalli.com',
-   #                                                   template_code='test')
-   #    print(c)
+
     
     @public_method
     def invia_proforma(self, record,email_account_id,email_template_id, **kwargs):
         tbl_proforma = self.db.table('pfda.proforma')
         if not record: 
             return
+        
+        record_id=record['id']
+        nome_file=record['pathtopdf']
+        pdfpath = self.site.storageNode('home:proforma_ranalli', nome_file)
+        attcmt = [pdfpath.internal_path]
+
+        #verifichiamo il secondo allegato info port nella tabella fileforemail
+        tbl_file =  self.db.table('pfda.fileforemail') #definiamo la variabile della tabella allegati
+        att = tbl_file.query(columns="$pathfile", where='').fetch()
+        len_att=len(att)
+        for r in range(len_att):
+            url_allegato=att[r][0]
+            #url_att = url_allegato.replace('home:','site/')#cambiamo al url_allegato la posizione home: in site/
+            #print(x)
+            attcmt.append(url_allegato)#appendiamo agli attcmt l'url_allegato aggiungendoci il path iniziale
 
         self.db.table('email.message').newMessageFromUserTemplate(
-                                                      record_id=record,
+                                                      record_id=record_id,
                                                       table='pfda.proforma',
+                                                      attachments=attcmt,
                                                       account_id = email_account_id,
                                                       template_id=email_template_id)
         
         self.db.commit()
+        msg_special='proforma'
+        return msg_special
 
     def invia_proforma2(self, record, resultAttr=None, **kwargs):
        
