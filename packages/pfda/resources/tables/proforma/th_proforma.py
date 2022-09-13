@@ -59,11 +59,11 @@ class ViewProforma(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('protocollo',width='8em')
+        r.fieldcell('protocollo',width='9em')
         r.fieldcell('data',width='5em')
         r.fieldcell('cliente_id')
-        r.fieldcell('imbarcazione_id')
-        r.fieldcell('cargo')
+        r.fieldcell('imbarcazione_id', width='10em')
+        r.fieldcell('cargo', width='10em')
         r.fieldcell('pilot')
         r.fieldcell('moor')
         r.fieldcell('tug')
@@ -81,7 +81,7 @@ class ViewProforma(BaseComponent):
         r.fieldcell('stamp')
         r.fieldcell('totalepfda', background='lightyellow',font_weight='bold')
         r.fieldcell('timbro')
-        r.fieldcell('pathtopdf')
+        r.fieldcell('pathtopdf', width='8em')
         #con la riga sottostante visualizziamo un bottone che ci fa aprire il pdf contenuto nel pathtopdf
         #r.fieldcell('pathtopdf', width='12em', template="""<button onclick="window.open('/_storage/home/proforma_ranalli/#');">proforma</button>""")
         #con la riga sottostante visualizziamo una lente d'ingradimento che ci fa aprire il pdf contenuto nel pathtopdf
