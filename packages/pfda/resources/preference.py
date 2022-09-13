@@ -30,28 +30,7 @@ class AppPref(object):
                     placeholder=True,
                     upload_filename='timbro_societa',
                     upload_folder='site:timbro/image')
-        fb.br()            
-        fb.div("Documento port info da allegare all'email", height='0px', padding='20px')  
-        fb.br()          
-        fb.dropUploader(height='100px', width='320px',colspan=2,
-                            label="<div style='padding:5px'>Drop document port general info here <br>or double click</div>",
-                            uploadPath='site:files', 
-                            progressBar=True,
-                            onUploadedMethod=self.uploadFile)
-        
-       # fb.div(hidden='^.file_path?=#v', lbl='File').dropUploader(height='100px', width='320px',colspan=2,
-       #                     label="<div style='padding:5px'>Drop document port general info here <br>or double click</div>",
-       #                     uploadPath='site:files',
-       #                     progressBar=True,
-       #                     onUploadedMethod=self.uploadFile)
-     
-        fb.textbox('^.file_path', lbl='File path',  width='100%')
-        #fb.textbox('^.file_path', lbl='File path', hidden='^.file_path?=!#v', width='100%')
-        btn = fb.Button('', lbl = 'set data')
-        btn.dataRpc('nome_temp', self.setdata)
-        fb.br()
-        remove = fb.button('Remove', hidden='^.file_path?=!#v')
-        remove.dataController('SET .file_path = null;')
+
         
     @public_method
     def onUploaded_file_uploader(self, file_path=None, **kwargs):
