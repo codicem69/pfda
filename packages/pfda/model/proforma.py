@@ -43,6 +43,7 @@ class Table(object):
         tbl.column('noteproforma',name_long='Note Proforma')
         tbl.column('pathtopdf',name_long='pathtopdf')
         tbl.column('timbro',dtype='B', name_long='timbro')
+        tbl.pyColumn('privacy',name_long='!![en]Privacy email', static=True, dtype='T')
         tbl.aliasColumn('bandiera', '@imbarcazione_id.bandiera', name_long='Bandiera')
         tbl.aliasColumn('loa', '@imbarcazione_id.loa', name_long='Loa')
         tbl.aliasColumn('gt', '@imbarcazione_id.gt', name_long='GT')
@@ -55,7 +56,10 @@ class Table(object):
                                                         where=''))#'$id=$id'))
 
                                                         
-   
+    def pyColumn_privacy(self,record,field):
+        privacy_email = self.db.application.getPreference('privacy_email',pkg='pfda')
+        return privacy_email 
+
     def defaultValues(self,record=None):
         return dict(data = self.db.workdate,
                     garbage=self.db.application.getPreference('garbage_df',pkg='pfda'),

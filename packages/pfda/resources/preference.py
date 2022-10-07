@@ -5,7 +5,11 @@ import os
 class AppPref(object):
 
     def prefpane_pfda(self,parent,**kwargs):
-        pane = parent.contentPane(**kwargs)
+        tc = parent.tabContainer(margin='2px',**kwargs)
+        self.costi_fissi(tc.borderContainer(title='!!Costi fissi'))
+        self.dati(tc.borderContainer(title='!!Dati'))
+    def costi_fissi(self,pane):    
+        #pane = parent.contentPane(**kwargs)
         fb = pane.formbuilder(cols=2, border_spacing='4px')
 
         # Nei **kwargs c'è già il livello di path dati corretto
@@ -18,10 +22,16 @@ class AppPref(object):
         fb.br()
         fb.simpleTextArea('^.notestandard',lbl='Note Standard',width='60em', height='200px',editor=True, colspan=2)
         fb.br()
+    def dati(self,pane):
+        fb = pane.formbuilder(cols=2, border_spacing='4px')   
+        fb.br()
         fb.dbSelect(value='^.mail.account_id', lbl='Mail account', table='email.account',columns='$',auxColumns='$full_name', hasDownArrow=True)
         fb.dbSelect(value='^.tpl.template_id', lbl='Template',
                         table='adm.userobject', hasDownArrow=True, condition='$objtype=:tpl', condition_tpl='template',
                         rowcaption='$code,$description', auxColumns='$description,$userid', selected_tbl='^.tpl.tbl')
+        fb.br()
+        fb.div('', width='100em', colspan=2)
+        fb.simpleTextArea('^.privacy_email',lbl='Email Privacy',width='100em', height='200px',editor=True)                
         fb.img(src='^.timbro',lbl='Timbro',
                     border='2px dotted silver',
                     crop_width='150px',
