@@ -3,8 +3,8 @@
 
 class Table(object):
     def config_db(self, pkg):
-        tbl =  pkg.table('serviziextra',pkey='id',name_long='serviziextra',name_plural='serviziextra',caption_field='servizi_id')
-        self.sysFields(tbl)
+        tbl =  pkg.table('serviziextra',pkey='id',name_long='serviziextra',name_plural='serviziextra',caption_field='servizi_id',               order_by='_row_count')
+        self.sysFields(tbl,counter='proforma_id')
         tbl.column('proforma_id',size='22',name_long='proforma_id').relation('proforma.id',relation_name='proforma_servextra', mode='foreignkey', onDelete='cascade')
         tbl.column('servizi_id',size='22',name_long='Servizi').relation('servizi.id',relation_name='servizi_extra', mode='foreignkey', onDelete='raise')
         tbl.column('descrizione',name_long='Descrizione')
