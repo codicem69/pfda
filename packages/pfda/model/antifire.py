@@ -8,6 +8,7 @@ class Table(object):
         tbl.column('tariffe_id',size='22',name_long='tariffe antifire').relation('tariffe.id',relation_name='tariffe_antifire', mode='foreignkey', onDelete='raise')
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('ore',dtype='N',size='3',name_long='n. Ore')
+        #tbl.column('ovt',dtype='N',size='3',name_long='OVT %')
         tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')
         tbl.column('totantifire',dtype='N',size='10,2',name_long='Totale Antifire',format='#,###.00')
 

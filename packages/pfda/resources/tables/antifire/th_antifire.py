@@ -13,6 +13,7 @@ class View(BaseComponent):
         r.fieldcell('tariffe_id')
         r.fieldcell('quantita')
         r.fieldcell('ore')
+        #r.fieldcell('ovt')
         r.fieldcell('pu')
         r.fieldcell('totantifire')
 
@@ -35,6 +36,7 @@ class ViewFromAntifire(BaseComponent):
                                             hasDownArrow=True))
         r.fieldcell('quantita',edit=dict(remoteRowController=True))#, edit=True)
         r.fieldcell('ore',edit=dict(remoteRowController=True))#, edit=True)
+        #r.fieldcell('ovt', edit=dict(remoteRowController=True))
         r.fieldcell('pu')
         r.fieldcell('totantifire', totalize=True)
  
@@ -46,6 +48,8 @@ class ViewFromAntifire(BaseComponent):
             return row
         if not row['quantita']:
             row['quantita'] = 2
+        #if not row['ovt']:
+        #    row['ovt'] = 0
         if not row['ore']:
             row['ore'] = 1    
         if field == 'tariffe_id':
@@ -68,7 +72,7 @@ class Form(BaseComponent):
         fb.field('proforma_id' )
         fb.field('tariffe_id' )
         fb.field('quantita' )
-        fb.field('ovt' )
+        #fb.field('ovt' )
         fb.field('pu' )
         fb.field('totantifire' )
 

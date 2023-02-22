@@ -88,7 +88,7 @@ class ViewProforma(BaseComponent):
         r.cell('apri tab', name="Proforma", width='5em', cellClasses='cellbutton',
                format_buttonclass='icnBaseLens buttonIcon',
                format_isbutton=True, format_onclick="""var row = this.widget.rowByIndex($1.rowIndex);
-               genro.childBrowserTab('/_storage/home/proforma_ranalli/'+row['pathtopdf'].trim());""")
+               genro.childBrowserTab('/_storage/home/proforma/'+row['pathtopdf'].trim());""")
         
     def th_order(self):
         return 'data:d'
@@ -116,7 +116,7 @@ class Form(BaseComponent):
         #qui sotto bcbmain se voglio inserire un'area nella parte in basso del proforma 
         #bcbmain = bc.borderContainer(region='bottom', height='10%',splitter=True)#.tabContainer(region='center',margin='2px')
 
-        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='140px'))
+        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='150px'))
         self.proformaDett(bc.borderContainer(region='center',datapath='.record'))
 
         bc = bc.borderContainer(region='right', width='50%', splitter=True)#.borderContainer(region='top', height='50%')
@@ -232,22 +232,21 @@ class Form(BaseComponent):
         fb.br()
         fb.div(' ')
         
-        #fb.Button('Invia Email',lbl='Invia Email',fire='send_email')
-        email_account_id = self.db.application.getPreference('mail.account_id',pkg='pfda')
-        email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
+        #email_account_id = self.db.application.getPreference('mail.account_id',pkg='pfda')
+        #email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
 
-        btn = fb.Button('Crea Email',lbl='Email Proforma')
-        btn.dataRpc('msg_special', self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
-                   record='=#FORM.record',
-                   email_account_id=email_account_id,
-                   email_template_id=email_template_id)
-        fb.dataController("""if(msgspec=='proforma') genro.publish("floating_message",{message:msg_txt, messageType:"message"});""",msgspec='^msg_special', msg_txt = 'Email ready to be sent')
+        #btn = fb.Button('Crea Email',lbl='Email Proforma')
+        #btn.dataRpc('msg_special', self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
+        #           record='=#FORM.record',
+        #           email_account_id=email_account_id,
+        #           email_template_id=email_template_id)
+        #fb.dataController("""if(msgspec=='proforma') genro.publish("floating_message",{message:msg_txt, messageType:"message"});""",msgspec='^msg_special', msg_txt = 'Email ready to be sent')
         # qua verifichiamo di aver settato nelle preferenze del proforma l'account email e il template da utilizzare
         # nel caso  saremo avvisati da un msg alert
-        if (email_account_id and email_template_id) == None:
-            #raise GnrException('purtroppo manca questa cosa ')
-            fb.data('.messaggio_speciale', "Verifica di aver inserito nelle preferenze globali \n l'account email e il template da utilizzare per l'invio dell'email")
-            fb.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
+        #if (email_account_id and email_template_id) == None:
+             #raise GnrException('purtroppo manca questa cosa ')
+            #fb.data('.messaggio_speciale', "Verifica di aver inserito nelle preferenze globali \n l'account email e il template da utilizzare per l'invio dell'email")
+            #fb.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
            
            # se al posto dell'alert volevamo inserire un div
            #fb.div(' ')
@@ -306,15 +305,28 @@ class Form(BaseComponent):
      #       return "$garbageval"
 
     def th_bottom_custom(self, bottom):
-        bar = bottom.slotBar('10,stampa_proforma,*,10')
+        bar = bottom.slotBar('10,stampa_proforma,5,crea_email,*,10')
         bar.stampa_proforma.button('Stampa Proforma', iconClass='print',
                                     action="""genro.publish("table_script_run",{table:"pfda.proforma",
                                                                                res_type:'print',
                                                                                resource:'stampa_prof',
                                                                                pkey: pkey})""",
                                                                                pkey='=#FORM.pkey') 
-        
 
+        email_account_id = self.db.application.getPreference('mail.account_id',pkg='pfda')
+        email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
+        btn_creaemail=bar.crea_email.button('Crea email proforma')
+        btn_creaemail.dataRpc('msg_special', self.invia_proforma,_ask="Hai creato il PDF con la stampa proforma? <br/> Altrimenti non ci sarà l'allegato nell'email",#self.db.table('pfda.proforma').invia_proforma,
+                   record='=#FORM.record',
+                   email_account_id=email_account_id,
+                   email_template_id=email_template_id)
+        bar.dataController("""if(msgspec=='proforma') genro.publish("floating_message",{message:msg_txt, messageType:"message"});""",msgspec='^msg_special', msg_txt = 'Email ready to be sent')
+        # qua verifichiamo di aver settato nelle preferenze del proforma l'account email e il template da utilizzare
+        # nel caso  saremo avvisati da un msg alert
+        if (email_account_id and email_template_id) == None:
+            #raise GnrException('purtroppo manca questa cosa ')
+            bar.data('.messaggio_speciale', "Verifica di aver inserito nelle preferenze globali \n l'account email e il template da utilizzare per l'invio dell'email")
+            bar.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
         
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px' )
@@ -329,7 +341,7 @@ class Form(BaseComponent):
         
         record_id=record['id']
         nome_file=record['pathtopdf']
-        pdfpath = self.site.storageNode('home:proforma_ranalli', nome_file)
+        pdfpath = self.site.storageNode('home:proforma', nome_file)
         attcmt = [pdfpath.internal_path]
 
         #verifichiamo il secondo allegato info port nella tabella fileforemail

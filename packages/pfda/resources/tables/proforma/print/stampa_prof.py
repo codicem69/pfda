@@ -31,7 +31,7 @@ class Main(BaseResourcePrint):
         nome_file = str.lower('{cl_id}.pdf'.format(
                     cl_id=prot_proforma[:-1]))#record[0:])
         
-        pdfpath = self.page.site.storageNode('home:proforma_ranalli', nome_file)
+        pdfpath = self.page.site.storageNode('home:proforma', nome_file)
         #pdfpath = self.page.site.storageNode('/home/tommaso/Documenti/Agenzia/PROFORMA', nome_file)
         #result = builder.writePdf(pdfpath=pdfpath)
         #self.setInClientData(path='gnr.clientprint',

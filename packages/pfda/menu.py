@@ -19,4 +19,5 @@ class Menu(object):
         proforma_da.thpage(u"Antifire", table="pfda.antifire", tags="")
         proforma_da.thpage(u"File for email", table="pfda.fileforemail", tags="")
         proforma_da.lookups(u"Tabelle Ausiliarie", lookup_manager="pfda")
-
+        email = root.branch(u"!![en]Email", tags="")
+        email.thpage(u"!![en]Messages", table="email.message", tags="")
