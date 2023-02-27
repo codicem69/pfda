@@ -329,7 +329,7 @@ class Form(BaseComponent):
             bar.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
         
     def th_options(self):
-        return dict(dialog_height='400px', dialog_width='600px' )
+        return dict(dialog_height='400px', dialog_width='600px', dialog_parentRatio=1 )
 
 
     
