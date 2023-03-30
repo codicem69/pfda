@@ -8,6 +8,7 @@ class Table(object):
         tbl.column('tipo',name_long='Tipo')
         tbl.column('nome',name_long='Nome')
         tbl.column('bandiera',name_long='Bandiera')
+        tbl.column('flag',size='2',name_long='!![en]Flag').relation('unlocode.nazione.code',relation_name='flag_pfda', mode='foreignkey', onDelete='raise')
         tbl.column('loa',name_long='LOA')
         tbl.column('gt',name_long='GT')
         tbl.column('nt',name_long='NT')

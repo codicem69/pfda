@@ -2,6 +2,7 @@
 from gnr.core.gnrdecorator import metadata
 from gnr.core.gnrnumber import floatToDecimal,decimalRound
 from gnr.core.gnrdecorator import public_method
+from gnr.core.gnrbag import Bag
 
 
 class Table(object):
@@ -44,6 +45,8 @@ class Table(object):
         tbl.column('pathtopdf',name_long='pathtopdf')
         tbl.column('timbro',dtype='B', name_long='timbro')
         tbl.pyColumn('privacy',name_long='!![en]Privacy email', static=True, dtype='T')
+        tbl.pyColumn('servizi',name_long='Servizi proforma', dtype='X')
+        tbl.pyColumn('test',name_long='test', dtype='X')
         tbl.aliasColumn('bandiera', '@imbarcazione_id.bandiera', name_long='Bandiera')
         tbl.aliasColumn('loa', '@imbarcazione_id.loa', name_long='Loa')
         tbl.aliasColumn('gt', '@imbarcazione_id.gt', name_long='GT')
@@ -60,6 +63,82 @@ class Table(object):
         privacy_email = self.db.application.getPreference('privacy_email',pkg='pfda')
         return privacy_email 
 
+    def pyColumn_servizi(self,record,field):
+        
+        righe = []
+        if record['diritticp']:
+            righe.append(dict(descrizione_servizio='Harbour Master Dues', descrizione='', tariffa=record['diritticp']))
+        if record['admcharge']:
+            righe.append(dict(descrizione_servizio='Administration charge', descrizione='',tariffa=record['admcharge']))
+        if record['pilot']:
+            righe.append(dict(descrizione_servizio='Pilot', descrizione='',tariffa=record['pilot']))
+        elif record['notepilot']: 
+            righe.append(dict(descrizione_servizio='Pilot', descrizione=record['notepilot'],tariffa=record['pilot']))   
+        if record['moor']:
+            righe.append(dict(descrizione_servizio='Mooringmen', descrizione='',tariffa=record['moor']))
+        elif record['notemoor']:
+            righe.append(dict(descrizione_servizio='Mooringmen', descrizione=record['notemoor'],tariffa=record['moor']))
+        if record['tug']:
+            righe.append(dict(descrizione_servizio='Tug', descrizione='',tariffa=record['tug']))
+        elif record['notetug']:
+            righe.append(dict(descrizione_servizio='Tug', descrizione=record['notetug'],tariffa=record['tug']))
+        if record['agency']:
+            righe.append(dict(descrizione_servizio='Agency fees', descrizione='',tariffa=record['agency']))
+        elif record['noteagency']:
+            righe.append(dict(descrizione_servizio='Agency fees', descrizione=record['noteagency'],tariffa=record['agency']))
+        if record['customs']:
+            righe.append(dict(descrizione_servizio='Customs clearance', descrizione='',tariffa=record['customs']))    
+        elif record['notecustoms']:
+             righe.append(dict(descrizione_servizio='Customs clearance', descrizione=record['notecustoms'],tariffa=record['customs']))    
+        if record['garbage']:
+            righe.append(dict(descrizione_servizio='Garbage', descrizione='',tariffa=record['garbage']))
+        elif record['notegarbage']:
+            righe.append(dict(descrizione_servizio='Garbage', descrizione=record['notegarbage'],tariffa=record['garbage']))
+        if record['retaingarbage']:
+            righe.append(dict(descrizione_servizio='Dispensation for liquid waste', descrizione='',tariffa=record['retaingarbage']))    
+        elif record['noteretaingb']:
+            righe.append(dict(descrizione_servizio='Dispensation for liquid waste', descrizione=record['noteretaingb'],tariffa=record['retaingarbage']))    
+        if record['isps']:
+            righe.append(dict(descrizione_servizio='Isps', descrizione='',tariffa=record['isps']))    
+        elif record['noteisps']:
+            righe.append(dict(descrizione_servizio='Isps', descrizione=record['noteisps'],tariffa=record['isps']))    
+        if record['misc']:
+            righe.append(dict(descrizione_servizio='Miscellaneous', descrizione='',tariffa=record['misc']))
+        elif record['notemisc']:
+            righe.append(dict(descrizione_servizio='Miscellaneous', descrizione=record['notemisc'],tariffa=record['misc']))
+        if record['bulkauth']:
+            righe.append(dict(descrizione_servizio='Auth. loading/unl. goods in bulk', descrizione='',tariffa=record['bulkauth']))
+        elif record['notebulk']:
+            righe.append(dict(descrizione_servizio='Auth. loading/unl. goods in bulk', descrizione=record['notebulk'],tariffa=record['bulkauth']))
+        if record['antifire']:
+            righe.append(dict(descrizione_servizio='Antifire/Antipollution', descrizione='',tariffa=record['antifire']))
+        elif record['noteantifire']:
+            righe.append(dict(descrizione_servizio='Antifire/Antipollution', descrizione=record['noteantifire'],tariffa=record['antifire']))
+
+        serviziextra = self.db.table('pfda.serviziextra').query(columns='$descrizione_servizio,$descrizione,$tariffa',
+                                                                    where='$proforma_id=:p_id',
+                                                                    p_id=record['id']).fetch()
+        serv_ex = len(serviziextra)
+        rigaextra=[]
+        for n in serviziextra: 
+            rigaextra=righe.append(dict(descrizione_servizio=serviziextra[0][0], descrizione=serviziextra[0][1],tariffa=serviziextra[0][2]))
+        print(x)
+        return righe
+
+    def pyColumn_test(self,record,field):
+        tbl_proforma = self.db.table('pfda.proforma')
+        dati_proforma = tbl_proforma.record(record['id']).output('dict')
+        
+        servizio=Bag()
+        servizio['pilota.descrizione']='pilota'
+        servizio.addItem('pilota.descrizione','pilota2')
+        servizio['pilota.note']='in/out'
+        servizio['pilota.importo']=250
+        servizio['moor.descrizione']='mooringmen'
+        servizio['moor.note']='in/out'
+        servizio['moor.importo']=750.00
+        return servizio
+        
     def defaultValues(self,record=None):
         return dict(data = self.db.workdate,
                     garbage=self.db.application.getPreference('garbage_df',pkg='pfda'),
