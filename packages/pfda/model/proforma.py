@@ -122,7 +122,7 @@ class Table(object):
         rigaextra=[]
         for n in serviziextra: 
             rigaextra=righe.append(dict(descrizione_servizio=serviziextra[0][0], descrizione=serviziextra[0][1],tariffa=serviziextra[0][2]))
-        print(x)
+        #print(x)
         return righe
 
     def pyColumn_test(self,record,field):

@@ -6,7 +6,7 @@ class Main(TableScriptToHtml):
 
     maintable = 'pfda.proforma'
     #Non indicheremo una row_table ma solo una maintable perché stamperemo i record della selezione corrente
-    #virtual_columns = '$notestandard'
+    virtual_columns = '$note_ag'
 
     doc_header_height = 48
     doc_footer_height = 80
@@ -273,7 +273,8 @@ class Main(TableScriptToHtml):
       
         noteproforma = (self.field('noteproforma')) 
         #notestandard = (self.db.application.getPreference('notestandard',pkg='pfda'), mask=“%s::HTML”)
-        note_standard = self.db.application.getPreference('notestandard',pkg='pfda')
+        #note_standard = self.db.application.getPreference('notestandard',pkg='pfda')
+        note_standard = self.field('note_ag')
         #timbro = self.db.application.getPreference('timbro',pkg='pfda')
 
         #notestandard = gnr.app_preference.pfda.notestd

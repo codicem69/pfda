@@ -5,10 +5,10 @@ from gnr.core.gnrstring import slugify
 from gnr.core.gnrdecorator import public_method
 from gnr.app.gnrapp import GnrApp
 
-caption = 'Stampa_Prof'
+caption = 'Email Proforma'
 
 class Main(BaseResourcePrint):
-    batch_title = 'Stampa_Prof'
+    batch_title = 'Email_Prof'
     batch_immediate='download'
     #Con batch_immediate='print' viene immediatamente aperta la stampa alla conclusione
     html_res = 'html_res/stampaprof'
@@ -41,6 +41,7 @@ class Main(BaseResourcePrint):
         #self.outputFileNode(page)
         id_record = record['id']
         percorso_pdf = pdfpath.internal_path
+
         #result = builder.writePdf(pdfpath=pdfpath)
        #if percorso_pdf is not None:
        #
@@ -80,7 +81,7 @@ class Main(BaseResourcePrint):
     
             
     def result_handler_pdf(self, resultAttr):
-        
+
         if not self.results:
             return '{btc_name} completed'.format(btc_name=self.batch_title), dict()
         save_as = slugify(self.print_options.get('save_as') or self.batch_parameters.get('save_as') or '')
@@ -122,12 +123,45 @@ class Main(BaseResourcePrint):
         if outputFileNode:
             
             path_pdf = outputFileNode.internal_path 
-            
-            
-        #print(h) 
-        #dati_proforma()
-        
-        
+        #dal path_pdf del file in stampa verifichiamo la posizione di site in modo che quando preleviamo l'url degli attachments
+        #possiamo aggiungere il path iniziale
+        pos_site=str.find(path_pdf,"site")
+
+        attcmt=[]
+        file_url=[]
+        #aggiungiamo agli attachments il file che andiamo a stampare
+        attcmt.append(path_pdf)
+        #verifichiamo il secondo allegato info port nella tabella fileforemail
+        tbl_file =  self.db.table('pfda.fileforemail') #definiamo la variabile della tabella allegati
+        att = tbl_file.query(columns="$pathfile", where='$agency_id=:ag_id',ag_id=self.db.currentEnv.get('current_agency_id')).fetch()
+        len_att=len(att)
+        for r in range(len_att):
+            url_allegato=att[r][0]
+            #url_att = url_allegato.replace('home:','site/')#cambiamo al url_allegato la posizione home: in site/
+            #print(x)
+            attcmt.append(url_allegato)#appendiamo agli attcmt l'url_allegato aggiungendoci il path iniziale
+
+        # Lettura degli account email predefiniti all'interno di Agency e Staff
+        tbl_staff =  self.db.table('agz.staff')
+        account_email,email_mittente,user_fullname = tbl_staff.readColumns(columns='$email_account_id,@email_account_id.address,$fullname',
+                  where='$agency_id=:ag_id',
+                    ag_id=self.db.currentEnv.get('current_agency_id'))
+
+        tbl_agency =  self.db.table('agz.agency')
+        agency_name,ag_fullstyle,account_emailpec,emailpec_mitt = tbl_agency.readColumns(columns='$agency_name,$fullstyle,$emailpec_account_id, @emailpec_account_id.address',
+                  where='$id=:ag_id',
+                    ag_id=self.db.currentEnv.get('current_agency_id'))
+
+        email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
+        record_id=list(self.records)[0]
+        self.db.table('email.message').newMessageFromUserTemplate(
+                                                      record_id=record_id,
+                                                      table='pfda.proforma',
+                                                      attachments=attcmt,
+                                                      account_id = account_email,
+                                                      template_id=email_template_id)
+        self.db.commit()
+
     def table_script_options_mail_deliver(self, pane,**kwargs):
         pane.attributes.update(title='!!Deliver mail')
         fb = self.table_script_fboptions(pane)

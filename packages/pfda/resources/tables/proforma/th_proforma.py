@@ -310,9 +310,9 @@ class Form(BaseComponent):
         bar.stampa_proforma.button('Stampa Proforma', iconClass='print',
                                     action="""genro.publish("table_script_run",{table:"pfda.proforma",
                                                                                res_type:'print',
-                                                                               resource:'stampa_prof',
+                                                                               resource:'stampa_proforma',
                                                                                pkey: pkey})""",
-                                                                               pkey='=#FORM.pkey') 
+                                                                               pkey='=#FORM.pkey')
 
         email_account_id = self.db.application.getPreference('mail.account_id',pkg='pfda')
         email_template_id = self.db.application.getPreference('tpl.template_id',pkg='pfda')
