@@ -10,7 +10,7 @@ class Main(TableScriptToHtml):
     css_requires='grid'
 
     doc_header_height = 48
-    #doc_footer_height = 80
+    doc_footer_height = 80
     grid_header_height = 5
     grid_row_height = 5
 
@@ -277,8 +277,10 @@ class Main(TableScriptToHtml):
             r = l.row(row_border=False)
         else:
             r = l.row()
-      
-        noteproforma = (self.field('noteproforma')) 
+
+        noteproforma=''
+        if self.field('noteproforma'):
+            noteproforma = (str(self.field('noteproforma') + '<br>' ))
         #notestandard = (self.db.application.getPreference('notestandard',pkg='pfda'), mask=“%s::HTML”)
         #note_standard = self.db.application.getPreference('notestandard',pkg='pfda')
         note_standard = self.field('note_ag')
@@ -293,7 +295,7 @@ class Main(TableScriptToHtml):
         #r.cell(self.db.application.getPreference('notestandard',pkg='pfda'), mask="%s::HTML", content_class='aligned_left', font_size='8pt')
         
         #r.cell(str(noteproforma) + str(self.db.application.getPreference('notestandard',pkg='pfda'), mask="%s::HTML"), content_class='aligned_left', font_size='8pt') 
-   
+
         r.cell(str(noteproforma) + str("{note_standard}::HTML".format(note_standard=note_standard)), content_class='aligned_left', font_size='8pt')
 
         #timbro="http://127.0.0.1:8083/_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150"
