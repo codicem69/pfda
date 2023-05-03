@@ -3,28 +3,35 @@ from gnr.core.gnrbag import Bag
 from gnr.core.gnrdecorator import public_method
 
 class Main(TableScriptToHtml):
-
+    #pdf_service = 'wk'
     maintable = 'pfda.proforma'
     #Non indicheremo una row_table ma solo una maintable perché stamperemo i record della selezione corrente
     virtual_columns = '$note_ag'
+    css_requires='grid'
 
     doc_header_height = 48
-    doc_footer_height = 80
+    #doc_footer_height = 80
     grid_header_height = 5
-
+    grid_row_height = 5
 
     def defineCustomStyles(self):
         self.body.style(""".cell_label{
                             font-size 8pt;
                             text-align:left;
                             color:gray;
-                            text-indent:1mm;}
+                            text-indent:0.5mm;
+                            width:auto;
+                            font-weight: normal;
+                            #line-height:auto;
+                            line-height:3mm;
+                            height:3mm;}
     
                             .footer_content{   
                             text-align:right;
                             margin:2mm;
                             }
                             """)
+
 
     def docHeader(self, header):
         layout = header.layout(name='doc_header', margin='5mm', border_width=0)
@@ -222,7 +229,7 @@ class Main(TableScriptToHtml):
     def gridStruct(self,struct):
         r = struct.view().rows()
         r.cell('descrizione_servizio', name='Service', mm_width=50)
-        r.cell('descrizione', name='Description')
+        r.cell('descrizione', name='Description', content_class="breakword")
         r.cell('tariffa', mm_width=20, name='Euro',format='#,###.00')
         
         #r.cell('prof_id')
@@ -250,7 +257,7 @@ class Main(TableScriptToHtml):
         else:
             descr_tot='Total PFDA excluded Italian Anchorage Dues - Euro'
         
-        l = footer.layout('footer',top=1,left=0.5,
+        l = footer.layout('footer',top=0,left=0.1,
                            lbl_class='caption', 
                            content_class = 'footer_content')
         
@@ -290,13 +297,17 @@ class Main(TableScriptToHtml):
         r.cell(str(noteproforma) + str("{note_standard}::HTML".format(note_standard=note_standard)), content_class='aligned_left', font_size='8pt')
 
         #timbro="http://127.0.0.1:8083/_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150"
+
+       # print(x)
+       # if self.record['timbro'] == True:
         if self.record['timbro'] == True:
+            timbro=self.record['@agency_id.agency_stamp']
             r = l.row()
-            timbro=self.page.externalUrl('_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150')
+            #timbro=self.page.externalUrl('_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150')
             #timbro="http://127.0.0.1:8083/_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150"
-            r.cell("""<img src="%s" width="100" height="100">::HTML""" %timbro,width=0)
-        #print (s)
-        #if self.record['noteproforma']:
+            r.cell("""<img src="%s" width="auto" height="100">::HTML""" %timbro,width=0)
+            #r.cell("""<img src="%s" width="100" height="100">::HTML""" %timbro,width=0)
+
 
     def calcDocFooterHeight(self):  
             if self.record['noteproforma']:
