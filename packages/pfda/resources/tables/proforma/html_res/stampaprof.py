@@ -59,7 +59,7 @@ class Main(TableScriptToHtml):
         #r = l.row(height=2)
         #r.cell(self.field('@imbarcazione_id.nome'))
         r = l.row(height=8)
-        r.cell(self.field('@imbarcazione_id.@flag.codename'), lbl='Flag', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA', font_size='10pt')
+        r.cell(self.field('@imbarcazione_id.@flag.nome'), lbl='Flag', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA', font_size='10pt')
         r = l.row(height=8)
         #r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA')
         #r = l.row(height=8)
