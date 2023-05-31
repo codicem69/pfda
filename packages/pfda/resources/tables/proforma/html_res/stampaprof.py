@@ -6,7 +6,7 @@ class Main(TableScriptToHtml):
     #pdf_service = 'wk'
     maintable = 'pfda.proforma'
     #Non indicheremo una row_table ma solo una maintable perché stamperemo i record della selezione corrente
-    virtual_columns = '$note_ag'
+    virtual_columns = '$note_ag,$bank_dt'
     css_requires='grid'
 
     doc_header_height = 48
@@ -284,6 +284,7 @@ class Main(TableScriptToHtml):
         #notestandard = (self.db.application.getPreference('notestandard',pkg='pfda'), mask=“%s::HTML”)
         #note_standard = self.db.application.getPreference('notestandard',pkg='pfda')
         note_standard = self.field('note_ag')
+        bank_details = self.field('bank_dt')
         #timbro = self.db.application.getPreference('timbro',pkg='pfda')
 
         #notestandard = gnr.app_preference.pfda.notestd
@@ -296,7 +297,7 @@ class Main(TableScriptToHtml):
         
         #r.cell(str(noteproforma) + str(self.db.application.getPreference('notestandard',pkg='pfda'), mask="%s::HTML"), content_class='aligned_left', font_size='8pt') 
 
-        r.cell(str(noteproforma) + str("{note_standard}::HTML".format(note_standard=note_standard)), content_class='aligned_left', font_size='8pt')
+        r.cell(str(noteproforma) + str("{bank_det}<br>{note_standard}::HTML".format(note_standard=note_standard,bank_det=bank_details)), content_class='aligned_left', font_size='8pt')
 
         #timbro="http://127.0.0.1:8083/_storage/site/timbro/image/timbro_societa.png?_pc=821&v_x=94.5&v_y=95&v_z=0.34&v_r=0&v_h=150&v_w=150"
 
