@@ -155,9 +155,9 @@ class Form(BaseComponent):
         fb.field('imbarcazione_id',width='22em')
         #fb.field('bandiera',width='28em')
         fb.field('@imbarcazione_id.@flag.codename',width='28em',lbl='!![en]Flag')
-        fb.field('gt',width='7em')
-        fb.field('nt',width='7em')
-        fb.field('loa',width='7em')
+        fb.field('@imbarcazione_id.gt',width='7em')
+        fb.field('@imbarcazione_id.nt',width='7em')
+        fb.field('@imbarcazione_id.loa',width='7em')
         fb.field('cargo',width='28em' )
        
         
