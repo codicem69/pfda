@@ -133,11 +133,13 @@ class Form(BaseComponent):
         self.CostiCustoms(tc.contentPane(title='Customs'))
         self.CostiAdmcharge(tc.contentPane(title='Adm Charge'))
         self.CostiServiziExtra(tc.contentPane(title='Servizi Extra'))
-        
+        self.CostiAntifire(tc.borderContainer(title='Antifire/Antipollution'))
         #self.CostiAntifire(tc.contentPane(title='Antifire/Antipollution'))
         self.NoteProforma(tc.contentPane(title='Note Proforma',datapath='.record'))
         tc = bc.tabContainer(region='bottom',margin='2px',height='50%')
-        self.CostiAntifire(tc.borderContainer(title='Antifire/Antipollution'))
+        self.calcoloPilota(tc.contentPane(title='Calcolo Pilota'))
+        self.calcoloMoor(tc.contentPane(title='Calcolo Moor'))
+        self.calcoloTug(tc.contentPane(title='Calcolo TUG'))
         
         #self.NoteProforma(bc.contentPane(title='Note Proforma',datapath='.record',region='bottom',margin='2px',height='50%'))
     #    self.proformaDettService(bc.borderContainer(region='bottom', datapath='.record', height='300px'))
@@ -276,6 +278,79 @@ class Form(BaseComponent):
         #fb = rightbc.formbuilder(cols=2, border_spacing='4px')
         #fb.field('pilot',width='5em' )
         pane.inlineTableHandler(relation='@proforma_pilota',viewResource='ViewFromPilot')                           
+
+    def calcoloPilota(self,pane):
+        bc = pane.borderContainer(height='400px',width='800px')
+        top = bc.contentPane(region='top',height='30px')
+        fb = top.formbuilder(cols=10,border_spacing='3px')
+        fb.button('clear',fire='.clear')
+        bc.dataFormula('.calcolo_pilota.store',"new gnr.GnrBag({r1:new gnr.GnrBag({description:'calcolo pilota'})})",_onStart=True,_fired='^.clear')
+        bc.contentPane(region='center').bagGrid(struct=self.struct_pilot,datapath='.calcolo_pilota',grid_footer='Totals',
+                                    width='100%',height='100%', export=True,searchOn=True) 
+
+    def calcoloMoor(self,pane):
+        bc = pane.borderContainer(height='400px',width='800px')
+        top = bc.contentPane(region='top',height='30px')
+        fb = top.formbuilder(cols=10,border_spacing='3px')
+        fb.button('clear',fire='.clear')
+        bc.dataFormula('.calcolo_moor.store',"new gnr.GnrBag({r1:new gnr.GnrBag({description:'calcolo moor'})})",_onStart=True,_fired='^.clear')
+        bc.contentPane(region='center').bagGrid(struct=self.struct_moor,datapath='.calcolo_moor',grid_footer='Totals',
+                                    width='100%',height='100%', export=True,searchOn=True)
+
+    def calcoloTug(self,pane):
+        bc = pane.borderContainer(height='400px',width='800px')
+        top = bc.contentPane(region='top',height='30px')
+        fb = top.formbuilder(cols=10,border_spacing='3px')
+        fb.button('clear',fire='.clear')
+        bc.dataFormula('.calcolo_tug.store',"new gnr.GnrBag({r1:new gnr.GnrBag({description:'calcolo tug'})})",_onStart=True,_fired='^.clear')
+        bc.contentPane(region='center').bagGrid(struct=self.struct_tug,datapath='.calcolo_tug',grid_footer='Totals',
+                                    width='100%',height='100%', export=True,searchOn=True)
+        
+    def struct_pilot(self, struct):
+        r = struct.view().rows()
+        r.cell('tariffa_id',name='Tariffe',width='20em', edit=dict(validate_notnull=True,table='pfda.tariffe',tag='dbSelect',
+                                            value='^.tariffa_id',
+                                            rowcaption='$codice,$descrizione',
+                                            auxColumns='@tariffa_tipo_id.descrizione',
+                                            columns='$codice',condition=":cod is NULL OR :cod = '' OR $codice LIKE :cod",
+                                            condition_cod='%pil%', 
+                                            selected_valore='.valore',
+                                            hasDownArrow=True))
+        r.cell('valore',name='P.U.', dtype='N', size='10,2')
+        r.cell('qt',name='Quantità',dtype='I',size='3',edit=True)
+        r.cell('ovt',name='OVT',dtype='N',size='3',edit=True)
+        r.cell('tot',name='Totale Pilota', dtype='N', size='10,2',totalize='.sum_tot',formula='qt*valore+qt*valore*ovt/100',format='###,###,###.00')
+
+    def struct_moor(self, struct):
+        r = struct.view().rows()
+        r.cell('tariffa_id',name='Tariffe',width='20em', edit=dict(validate_notnull=True,table='pfda.tariffe',tag='dbSelect',
+                                            value='^.tariffa_id',
+                                            rowcaption='$codice,$descrizione',
+                                            auxColumns='@tariffa_tipo_id.descrizione',
+                                            columns='$codice',condition=":cod is NULL OR :cod = '' OR $codice LIKE :cod",
+                                            condition_cod='%orm%', 
+                                            selected_valore='.valore',
+                                            hasDownArrow=True))
+        r.cell('valore',name='P.U.', dtype='N', size='10,2')
+        r.cell('qt',name='Quantità',dtype='N',size='3',edit=True)
+        r.cell('ovt',name='OVT',dtype='N',size='3',edit=True)
+        r.cell('tot',name='Totale Moor',dtype='N',formula='qt*valore+qt*valore*ovt/100',totalize='.sum_moor',format='###,###,###.00')  
+
+    def struct_tug(self, struct):
+        r = struct.view().rows()
+        r.cell('tariffa_id',name='Tariffe',width='20em', edit=dict(validate_notnull=True,table='pfda.tariffe',tag='dbSelect',
+                                            value='^.tariffa_id',
+                                            rowcaption='$codice,$descrizione',
+                                            auxColumns='@tariffa_tipo_id.descrizione',
+                                            columns='$codice',condition=":cod is NULL OR :cod = '' OR $codice LIKE :cod",
+                                            condition_cod='%tug%',
+                                            selected_valore='.valore',
+                                            hasDownArrow=True))
+        r.cell('valore',name='P.U.', dtype='N', size='10,2')
+        r.cell('n_tug',name='Numero Tug',dtype='N',size='3',edit=True)
+        r.cell('qt',name='Quantità prestazioni',dtype='N',size='3',edit=True)
+        r.cell('ovt',name='OVT',dtype='N',size='3',edit=True)
+        r.cell('tot',name='Totale TUG',dtype='N',formula='n_tug*valore*qt+n_tug*valore*qt*ovt/100',totalize='.sum_tug',format='###,###,###.00')
 
     def CostiTug(self,pane):
         pane.inlineTableHandler(relation='@proforma_tug',viewResource='ViewFromTug')  
