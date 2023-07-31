@@ -365,7 +365,8 @@ class Form(BaseComponent):
         pane.inlineTableHandler(relation='@proforma_admcharge',viewResource='ViewFromAdmcharge')
 
     def CostiServiziExtra(self,pane):
-        pane.inlineTableHandler(relation='@proforma_servextra',viewResource='ViewFromServiziExtra')    
+        pane.inlineTableHandler(relation='@proforma_servextra',viewResource='ViewFromServiziExtra',
+                                picker='servizi_id')    
 
     def CostiAntifire(self,bc):
         cp = bc.contentPane(region='center')

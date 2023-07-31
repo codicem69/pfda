@@ -30,7 +30,7 @@ class Form(BaseComponent):
         fb = pane.formbuilder(cols=2, border_spacing='4px')
         fb.field('tipo' )
         fb.field('nome' )
-        fb.field('bandiera' )
+        #fb.field('bandiera' )
         fb.field('flag',columns='$nome,$code',auxColumns='$nome', limit=20 )
         fb.field('loa',validate_regex=" ^[0-9,]*$",validate_regex_error='Insert only numbers and comma', placeholder='eg: 10 or 10,50' )
         fb.field('gt',validate_regex=" ^[0-9,]*$",validate_regex_error='Insert only numbers and comma', placeholder='eg:1200 or 1200,00' )
