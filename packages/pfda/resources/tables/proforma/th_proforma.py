@@ -88,7 +88,7 @@ class ViewProforma(BaseComponent):
         r.cell('apri tab', name="Proforma", width='5em', cellClasses='cellbutton',
                format_buttonclass='icnBaseLens buttonIcon',
                format_isbutton=True, format_onclick="""var row = this.widget.rowByIndex($1.rowIndex);
-               genro.childBrowserTab('/_storage/home/proforma/'+row['pathtopdf'].trim());""")
+               genro.childBrowserTab('/_storage/home/proforma_ranalli/'+row['pathtopdf'].trim());""")
         
     def th_order(self):
         return 'data:d'
