@@ -9,7 +9,7 @@ class Table(object):
     def config_db(self,pkg):
         tbl =  pkg.table('proforma',pkey='id',name_long='proforma',name_plural='proforma',caption_field='protocollo')
         self.sysFields(tbl)
-        tbl.column('protocollo',size='14',name_long='Protocollo')
+        tbl.column('protocollo',name_long='Protocollo')
         tbl.column('data',dtype='D',name_long='Data')
         tbl.column('cliente_id',size='22',name_long='Cliente').relation('cliente.id',relation_name='cliente', mode='foreignkey', onDelete='raise')
         tbl.column('imbarcazione_id',size='22',name_long='Imbarcazione').relation('imbarcazione.id',relation_name='proforma_imb', mode='foreignkey', onDelete='raise')
@@ -36,7 +36,7 @@ class Table(object):
         tbl.column('notebulk',name_long='Note bulk auth')
         tbl.column('antifire',dtype='N',size='10,2',name_long='Antifire',format='#,###.00')
         tbl.column('noteantifire',name_long='Note Antifire')
-        tbl.column('tot_servextra',dtype='N',size='10,2',name_long='Tot.Serv.Extra',format='#,###.00')
+        tbl.column('tot_servextra',dtype='N',size='10,2',name_long='Tot. Serv. Extra',format='#,###.00')
         tbl.column('diritticp',dtype='N',size='10,2',name_long='Tributi CP',format='#,###.00')
         tbl.column('admcharge',dtype='N',size='10,2',name_long='Administration Charge',format='#,###.00')
         tbl.column('stamp',dtype='N',size='10,2',name_long='Tax Stamps',format='#,###.00')
@@ -352,6 +352,9 @@ class Table(object):
     #      return
     #  self.aggiornaPdf(record)      
 
+    def onDuplicating(self,record):
+        
+        record['protocollo'] = '%s_rev' %record['protocollo']   
 
     def pdfpath(self,proforma_id=None, record=None):
         

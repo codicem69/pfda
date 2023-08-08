@@ -59,7 +59,7 @@ class ViewProforma(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('protocollo',width='9em')
+        r.fieldcell('protocollo',width='11em')
         r.fieldcell('data',width='5em')
         r.fieldcell('cliente_id')
         r.fieldcell('imbarcazione_id', width='10em')
@@ -68,14 +68,14 @@ class ViewProforma(BaseComponent):
         r.fieldcell('moor')
         r.fieldcell('tug')
         r.fieldcell('agency')
-        r.fieldcell('customs',width='7em')
-        r.fieldcell('garbage')
-        r.fieldcell('retaingarbage')
+        r.fieldcell('customs',width='6em')
+        r.fieldcell('garbage',width='5em')
+        r.fieldcell('retaingarbage',width='5em')
         r.fieldcell('isps',width='5em')
         r.fieldcell('misc')
         r.fieldcell('bulkauth')
         r.fieldcell('antifire',width='5em')
-        r.fieldcell('tot_servextra',width='7em')
+        r.fieldcell('tot_servextra',width='5em')
         r.fieldcell('diritticp')
         r.fieldcell('admcharge',width='7em')
         r.fieldcell('stamp')
@@ -406,7 +406,7 @@ class Form(BaseComponent):
             bar.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
         
     def th_options(self):
-        return dict(dialog_windowRatio = 1, annotations= True )
+        return dict(dialog_windowRatio = 1, annotations= True, duplicate=True )
         #return dict(dialog_height='400px', dialog_width='600px', dialog_parentRatio=1 )
 
 
