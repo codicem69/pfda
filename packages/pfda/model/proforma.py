@@ -352,9 +352,10 @@ class Table(object):
     #      return
     #  self.aggiornaPdf(record)      
 
+    #CON LA DUPLICAZIONE DEL RECORD AGGIUNGIAMO AL PROTOCOLLO LA SIGLA _REV
     def onDuplicating(self,record):
-        
         record['protocollo'] = '%s_rev' %record['protocollo']   
+        
 
     def pdfpath(self,proforma_id=None, record=None):
         
