@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<GenRoBag><_ins_ts _tag="__ins_ts" _T="DH" dtype="DH" name_long="!![en]Insert date" indexed="True::B" group="zzz" onInserting="setTSNow" _sysfield="True::B" as="t0___ins_ts">2021-12-17T11:21:55.410873+01:00</_ins_ts>
+<GenRoBag><_ins_ts _tag="__ins_ts" _T="DH" dtype="DH" name_long="!![en]Insert date" indexed="True::B" group="zzz" onInserting="setTSNow" _sysfield="True::B" as="t0___ins_ts">2023-02-21T09:03:11.769661+01:00</_ins_ts>
 <_del_ts _tag="__del_ts" _T="NN" dtype="DH" name_long="!![en]Logical delete date" indexed="True::B" group="zzz" _sysfield="True::B" as="t0___del_ts"></_del_ts>
-<_mod_ts _tag="__mod_ts" _T="DH" dtype="DH" name_long="!![en]Update date" indexed="True::B" group="zzz" onInserting="setTSNow" onUpdating="setTSNow" _sysfield="True::B" print_width="26::L" as="t0___mod_ts">2021-12-17T11:21:55.410894+01:00</_mod_ts>
+<_mod_ts _tag="__mod_ts" _T="DH" dtype="DH" name_long="!![en]Update date" indexed="True::B" group="zzz" onInserting="setTSNow" onUpdating="setTSNow" _sysfield="True::B" print_width="26::L" as="t0___mod_ts">2023-11-10T11:34:27.707577+01:00</_mod_ts>
 <_ins_user _tag="__ins_user" _T="NN" name_long="!![en]User Insert" group="zzz" onInserting="setCurrentUser" _sysfield="True::B" dtype="T" as="t0___ins_user"></_ins_user>
 <identifier size=":120" unique="True::B" indexed="True::B" sql_value="COALESCE(:tbl,:pkg,'')||:objtype||:code|| CASE WHEN :private THEN :userid ELSE '' END" dtype="A" as="t0_identifier">pfda.proformatemplateemail_pfda</identifier>
 <code size=":40" name_long="!![en]Code" indexed="y" dtype="A" print_width="30::L" as="t0_code">email_pfda</code>
@@ -24,7 +24,7 @@
 &lt;div&gt;
 	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;PLEASE LET US KNOW HOW THE D/A AND INVOICES MUST BE HEADED AND MAILED.&lt;/span&gt;&lt;/div&gt;
+	&lt;u&gt;&lt;span style="font-family:courier new,courier,monospace;"&gt;PLEASE LET US KNOW HOW THE D/A AND INVOICES MUST BE HEADED INCLUDING VAT OR REGISTRATION NUMBER.&lt;/span&gt;&lt;/u&gt;&lt;/div&gt;
 &lt;div&gt;
 	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
@@ -52,15 +52,11 @@
 &lt;div&gt;
 	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;Ranalli S.r.l.&lt;/span&gt;&lt;/div&gt;
+	&lt;span style="font-family:courier new,courier,monospace;"&gt;$agency_fullstyle&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;Via Porto snc&lt;/span&gt;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;66026 Ortona (Ch) - Italy&lt;/span&gt;&lt;/div&gt;
-&lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;tel. +39 085 9064600&lt;/span&gt;&lt;/div&gt;
-&lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;fax +39 085 9064178&lt;/span&gt;&lt;/div&gt;</content>
+	&lt;span style="font-family:courier new,courier,monospace;"&gt;$privacy_email&lt;/span&gt;&lt;/div&gt;</content>
 <metadata><author>admin</author>
 <version _T="NN"></version>
 <date _T="NN"></date>
@@ -180,25 +176,45 @@
 <df_template _T="NN"></df_template>
 <format _T="NN" dtype="::NN"></format>
 <mask _T="NN" dtype="::NN"></mask>
-<editable _T="NN" dtype="::NN"></editable></g303v4oew9></varsbag>
+<editable _T="NN" dtype="::NN"></editable></g303v4oew9>
+<gqgmnpjxoh _pkey="gqgmnpjxoh"><fieldpath dtype="::NN">@agency_id.fullstyle</fieldpath>
+<dtype dtype="::NN">A</dtype>
+<fieldname dtype="::NN">Agency/fullstyle</fieldname>
+<varname dtype="::NN">agency_fullstyle</varname>
+<virtual_column _T="B">True</virtual_column>
+<required_columns _T="NN" dtype="::NN"></required_columns>
+<df_template _T="NN" dtype="::NN"></df_template>
+<format _T="NN" dtype="::NN"></format>
+<mask _T="NN" dtype="::NN"></mask>
+<editable _T="NN" dtype="::NN"></editable></gqgmnpjxoh>
+<gqgn5t5fl5 _pkey="gqgn5t5fl5"><fieldpath dtype="::NN">privacy</fieldpath>
+<dtype dtype="::NN">T</dtype>
+<fieldname dtype="::NN">Privacy email</fieldname>
+<varname dtype="::NN">privacy_email</varname>
+<virtual_column _T="B">True</virtual_column>
+<required_columns _T="NN" dtype="::NN"></required_columns>
+<df_template _T="NN" dtype="::NN"></df_template>
+<format _T="NN" dtype="::NN"></format>
+<mask _T="NN" dtype="::NN"></mask>
+<editable _T="NN" dtype="::NN"></editable></gqgn5t5fl5></varsbag>
 <parameters _T="BAG"></parameters>
 <email><attached_reports _T="BAG"></attached_reports></email>
-<compiled><main maintable="pfda.proforma" locale="it-IT" virtual_columns="" columns="@imbarcazione_id.tipo,@cliente_id.email,@cliente_id.email_cc,$cargo,@imbarcazione_id.nome,$pathtopdf,@imbarcazione_id.bandiera,@imbarcazione_id.loa,@imbarcazione_id.nt,@imbarcazione_id.gt" formats="{}::JS" masks="{}::JS" editcols="{}::JS" df_templates="{}::JS" dtypes='{"imbarcazione_tipo": "A", "cliente_email": "T", "cliente_email_cc": "T", "cargo": "T", "imbarcazione_nome": "T", "pathtopdf": "T", "imbarcazione_bandiera": "T", "imbarcazione_loa": "T", "imbarcazione_nt": "T", "imbarcazione_gt": "T"}::JS'>&lt;html&gt;&lt;body&gt;&lt;div&gt;
+<compiled><main maintable="pfda.proforma" locale="it-IT" virtual_columns="@agency_id.fullstyle,privacy" columns="@imbarcazione_id.tipo,@cliente_id.email,@cliente_id.email_cc,$cargo,@imbarcazione_id.nome,$pathtopdf,@imbarcazione_id.bandiera,@imbarcazione_id.loa,@imbarcazione_id.nt,@imbarcazione_id.gt,@agency_id.fullstyle,$privacy" formats="{}::JS" masks="{}::JS" editcols="{}::JS" df_templates="{}::JS" dtypes='{"imbarcazione_tipo": "A", "cliente_email": "T", "cliente_email_cc": "T", "cargo": "T", "imbarcazione_nome": "T", "pathtopdf": "T", "imbarcazione_bandiera": "T", "imbarcazione_loa": "T", "imbarcazione_nt": "T", "imbarcazione_gt": "T", "agency_fullstyle": "A", "privacy_email": "T"}::JS'>&lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;Good day,&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;many thanks for your request.&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;Here attached our best proforma d/a for&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;$@imbarcazione_id.tipo $@imbarcazione_id.nome - GT $@imbarcazione_id.gt - NT $@imbarcazione_id.nt - LOA $@imbarcazione_id.loa - $cargo at Ortona Port&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;PLEASE LET US KNOW HOW THE D/A AND INVOICES MUST BE HEADED AND MAILED.&lt;/span&gt;&lt;/div&gt;
+	&lt;u&gt;&lt;span style="font-family:courier new,courier,monospace;"&gt;PLEASE LET US KNOW HOW THE D/A AND INVOICES MUST BE HEADED INCLUDING VAT OR REGISTRATION NUMBER.&lt;/span&gt;&lt;/u&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;ORTONA PORT RESTRICTIONS:&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
@@ -206,34 +222,30 @@
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;MAX DRAFT m.5,70 - MAX LOA m.180 (RIVA QUAY)&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;Water density 1,025&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;NORMAL WORKING DAY FROM MONDAY TO FRIDAY H.0730-1200 1330-1700&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;Also attached Ortona Port general info.&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
 	&lt;span style="font-family:courier new,courier,monospace;"&gt;Brgds&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&amp;#160;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;Ranalli S.r.l.&lt;/span&gt;&lt;/div&gt;
+	&lt;span style="font-family:courier new,courier,monospace;"&gt;$@agency_id.fullstyle&lt;/span&gt;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;Via Porto snc&lt;/span&gt;&lt;/div&gt;
+	&amp;nbsp;&lt;/div&gt;
 &lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;66026 Ortona (Ch) - Italy&lt;/span&gt;&lt;/div&gt;
-&lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;tel. +39 085 9064600&lt;/span&gt;&lt;/div&gt;
-&lt;div&gt;
-	&lt;span style="font-family:courier new,courier,monospace;"&gt;fax +39 085 9064178&lt;/span&gt;&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</main></compiled></data>
+	&lt;span style="font-family:courier new,courier,monospace;"&gt;$privacy&lt;/span&gt;&lt;/div&gt;</main></compiled>
+<content_css _T="NN"></content_css></data>
 <authtags _T="NN" dtype="T" name_long="!![en]Auth tags" print_width="20::L" as="t0_authtags"></authtags>
 <private _T="B" dtype="B" name_long="!![en]Private" print_width="11::L" as="t0_private">False</private>
 <quicklist _T="NN" dtype="B" name_long="!![en]Quicklist" print_width="13::L" as="t0_quicklist"></quicklist>

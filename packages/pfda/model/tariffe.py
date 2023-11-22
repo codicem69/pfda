@@ -8,4 +8,4 @@ class Table(object):
         tbl.column('codice',name_long='Codice')
         tbl.column('descrizione',name_long='Descrizione')
         tbl.column('valore',dtype='N',name_long='Valore',format='#,###.00')
-        tbl.column('tariffa_tipo_id',size='22',name_long='tariffe').relation('tariffa_tipo.id',relation_name='tariffe', mode='foreignkey', onDelete='raise')
+        tbl.column('tariffa_tipo_id',size='22',name_long='tariffe',batch_assign=dict(hasDownArrow=True)).relation('tariffa_tipo.id',relation_name='tariffe', mode='foreignkey', onDelete='raise')
