@@ -197,6 +197,7 @@ class Main(TableScriptToHtml):
          #   result['servextra'] = Bag(dict(service=dati_servextra['servizi_id'],
           #                                  description=dati_servextra['descrizione'],
            #                                 euro=dati_servextra['tariffa']))    
+        #print(x)
         return righe
 
        

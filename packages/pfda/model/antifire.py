@@ -14,9 +14,15 @@ class Table(object):
 
     def aggiornaAntifire(self,record):
         proforma_id = record['proforma_id']
-        self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaAntifire,
+        self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServizi,
                                     proforma_id=proforma_id,
                                     _deferredId=proforma_id)
+
+    #def aggiornaAntifire(self,record):
+    #    proforma_id = record['proforma_id']
+    #    self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaAntifire,
+    #                                proforma_id=proforma_id,
+    #                                _deferredId=proforma_id)    
 
     #def trigger_onInserting(self, record):
     #    self.aggiornaPilota(record)

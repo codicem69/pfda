@@ -277,7 +277,7 @@ class Form(BaseComponent):
         #rightbc = bc.roundedGroup(title='Cosmail.account_idti Pilota')
         #fb = rightbc.formbuilder(cols=2, border_spacing='4px')
         #fb.field('pilot',width='5em' )
-        pane.inlineTableHandler(relation='@proforma_pilota',viewResource='ViewFromPilot')                           
+        pane.inlineTableHandler(relation='@proforma_pilota',viewResource='ViewFromPilot')
 
     def calcoloPilota(self,pane):
         bc = pane.borderContainer(height='400px',width='800px')

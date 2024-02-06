@@ -15,10 +15,14 @@ class Table(object):
 
     def aggiornaServExtra(self,record):
         proforma_id = record['proforma_id']
-        self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServExtra,
+        self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServizi,
                                     proforma_id=proforma_id,
                                     _deferredId=proforma_id)
-
+    #def aggiornaServExtra(self,record):
+    #    proforma_id = record['proforma_id']
+    #    self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServExtra,
+    #                                proforma_id=proforma_id,
+    #                                _deferredId=proforma_id)
     #def trigger_onInserting(self, record):
     #    self.aggiornaPilota(record)
 

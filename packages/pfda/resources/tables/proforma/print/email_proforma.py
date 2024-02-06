@@ -47,7 +47,6 @@ class Main(BaseResourcePrint):
         prot_proforma = prot_proforma.replace("/", "")
         nome_file = str.lower('{cl_id}.pdf'.format(
                     cl_id=prot_proforma[:-1]))#record[0:])
-        
         pdfpath = self.page.site.storageNode('home:proforma', nome_file)
         #pdfpath = self.page.site.storageNode('/home/tommaso/Documenti/Agenzia/PROFORMA', nome_file)
         #result = builder.writePdf(pdfpath=pdfpath)
@@ -102,14 +101,14 @@ class Main(BaseResourcePrint):
         if not self.results:
             return '{btc_name} completed'.format(btc_name=self.batch_title), dict()
         save_as = slugify(self.print_options.get('save_as') or self.batch_parameters.get('save_as') or '')
-        
+
         if not save_as:
             if len(self.results)>1:
                 save_as = 'multiple_pfda' #slugify(self.batch_title)
             else:
                 save_as =  self.page.site.storageNode(self.results['#0']).cleanbasename[9:] 
                 #aggiunto [9:] per avere il record -9 caratteri iniziali
-        
+
         outputFileNode=self.page.site.storageNode('home:proforma_ranalli', save_as,autocreate=-1)
         #outputFileNode=self.page.site.storageNode('/home/tommaso/Documenti/Agenzia/PROFORMA', save_as,autocreate=-1)
         #self.print_options.setItem('zipped', True) # settando il valore zipped a True ottengo un file zippato

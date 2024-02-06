@@ -156,63 +156,38 @@ class Table(object):
                     date_field='data',showOnLoad=True,recycle=True)
                     
                 
-
-    
-    def ricalcolaOrmeggiatori(self,proforma_id=None):
+    def ricalcolaServizi(self,proforma_id=None):
         with self.recordToUpdate(proforma_id) as record:
             totale_ormeggiatori = self.db.table('pfda.ormeggiatori').readColumns(columns="""SUM($totmoor) AS totale_ormeggiatori""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
             if totale_ormeggiatori is None:
                 record['moor'] = None
             else:    
-                record['moor'] = floatToDecimal(totale_ormeggiatori + 2 or 0) 
-                
-        self.ricalcolaTotalePfda(proforma_id)
-                                                                                       
-            
-    def ricalcolaPilota(self,proforma_id=None):
-        with self.recordToUpdate(proforma_id) as record:
+                record['moor'] = floatToDecimal(totale_ormeggiatori + 2 or 0)
             totale_pilota = self.db.table('pfda.pilota').readColumns(columns="""SUM($totpilot) AS totale_pilota""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
-            
             if totale_pilota is None:
                 record['pilot'] = None
             else:    
-                record['pilot'] = floatToDecimal(totale_pilota + 2 or 0) 
-        self.ricalcolaTotalePfda(proforma_id)
-
-    def ricalcolaTug(self,proforma_id=None):
-        with self.recordToUpdate(proforma_id) as record:
+                record['pilot'] = floatToDecimal(totale_pilota + 2 or 0)
             totale_tug = self.db.table('pfda.tug').readColumns(columns="""SUM($tottug) AS totale_tug""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
             if totale_tug is None:
                 record['tug'] = None
             else:    
-                record['tug'] = floatToDecimal(totale_tug + 2 or 0) 
-        self.ricalcolaTotalePfda(proforma_id)
-
-    def ricalcolaAdmcharge(self,proforma_id=None):
-        with self.recordToUpdate(proforma_id) as record:
+                record['tug'] = floatToDecimal(totale_tug + 2 or 0)
             totale_admcharge = self.db.table('pfda.admcharge').readColumns(columns="""SUM($totadmcharge) AS totale_admcharge""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
             if totale_admcharge is None:
                 record['admcharge'] = None
             else:    
-                record['admcharge'] = floatToDecimal(totale_admcharge or 0)     
-        self.ricalcolaTotalePfda(proforma_id)
-
-    def ricalcolaServExtra(self,proforma_id=None):
-        with self.recordToUpdate(proforma_id) as record:
+                record['admcharge'] = floatToDecimal(totale_admcharge or 0)
             totale_serviziextra = self.db.table('pfda.serviziextra').readColumns(columns="""SUM($tariffa) AS tot_servextra""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
             if totale_serviziextra is None:
                 record['tot_servextra'] = None
             else:    
                 record['tot_servextra'] = floatToDecimal(totale_serviziextra or 0)
-        self.ricalcolaTotalePfda(proforma_id)
-
-    def ricalcolaAntifire(self,proforma_id=None):
-        with self.recordToUpdate(proforma_id) as record:
             totale_antifire = self.db.table('pfda.antifire').readColumns(columns="""SUM($totantifire) AS totantifire""",
                                                                      where='$proforma_id=:f_id',f_id=proforma_id)
             if totale_antifire is None:
@@ -220,6 +195,68 @@ class Table(object):
             else:    
                 record['antifire'] = floatToDecimal(totale_antifire + 2 or 0)                     
         self.ricalcolaTotalePfda(proforma_id)
+
+    #def ricalcolaOrmeggiatori(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_ormeggiatori = self.db.table('pfda.ormeggiatori').readColumns(columns="""SUM($totmoor) AS totale_ormeggiatori""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        if totale_ormeggiatori is None:
+    #            record['moor'] = None
+    #        else:    
+    #            record['moor'] = floatToDecimal(totale_ormeggiatori + 2 or 0) 
+    #            
+    #    self.ricalcolaTotalePfda(proforma_id)                                                                                    
+    #        
+    #def ricalcolaPilota(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_pilota = self.db.table('pfda.pilota').readColumns(columns="""SUM($totpilot) AS totale_pilota""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        
+    #        if totale_pilota is None:
+    #            record['pilot'] = None
+    #        else:    
+    #            record['pilot'] = floatToDecimal(totale_pilota + 2 or 0) 
+    #    self.ricalcolaTotalePfda(proforma_id)
+#
+    #def ricalcolaTug(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_tug = self.db.table('pfda.tug').readColumns(columns="""SUM($tottug) AS totale_tug""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        if totale_tug is None:
+    #            record['tug'] = None
+    #        else:    
+    #            record['tug'] = floatToDecimal(totale_tug + 2 or 0) 
+    #    self.ricalcolaTotalePfda(proforma_id)
+#
+    #def ricalcolaAdmcharge(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_admcharge = self.db.table('pfda.admcharge').readColumns(columns="""SUM($totadmcharge) AS totale_admcharge""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        if totale_admcharge is None:
+    #            record['admcharge'] = None
+    #        else:    
+    #            record['admcharge'] = floatToDecimal(totale_admcharge or 0)     
+    #    self.ricalcolaTotalePfda(proforma_id)
+#
+    #def ricalcolaServExtra(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_serviziextra = self.db.table('pfda.serviziextra').readColumns(columns="""SUM($tariffa) AS tot_servextra""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        if totale_serviziextra is None:
+    #            record['tot_servextra'] = None
+    #        else:    
+    #            record['tot_servextra'] = floatToDecimal(totale_serviziextra or 0)
+    #    self.ricalcolaTotalePfda(proforma_id)
+#
+    #def ricalcolaAntifire(self,proforma_id=None):
+    #    with self.recordToUpdate(proforma_id) as record:
+    #        totale_antifire = self.db.table('pfda.antifire').readColumns(columns="""SUM($totantifire) AS totantifire""",
+    #                                                                 where='$proforma_id=:f_id',f_id=proforma_id)
+    #        if totale_antifire is None:
+    #            record['antifire'] = None
+    #        else:    
+    #            record['antifire'] = floatToDecimal(totale_antifire + 2 or 0)                     
+    #    self.ricalcolaTotalePfda(proforma_id)
 
     def ricalcolaTotalePfda(self,proforma_id):
         with self.recordToUpdate(proforma_id) as record:
@@ -322,7 +359,7 @@ class Table(object):
 
     def aggiorna_Pdf(self,record):
         proforma_id = record['id']
-        
+
         self.db.deferToCommit(self.pdfpath,
                                    proforma_id=proforma_id,
                                    _deferredId=proforma_id)
