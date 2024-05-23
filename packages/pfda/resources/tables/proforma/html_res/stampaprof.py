@@ -248,16 +248,16 @@ class Main(TableScriptToHtml):
                                                                     p_id=self.record['id']).fetch()
         righe = righe + serviziextra
 
-        
-        if len (righe) != 0:
+        descr_tot=''
+        if len (righe) > 0:
             for r in righe:
                 if r['descrizione_servizio'] == 'Italian Anchorage Dues':
                     descr_tot='Total PFDA Euro'
-                else:
-                    descr_tot='Total PFDA excluded Italian Anchorage Dues - Euro'
+        if descr_tot!='':
+            descr_tot
         else:
             descr_tot='Total PFDA excluded Italian Anchorage Dues - Euro'
-        
+
         l = footer.layout('footer',top=0,left=0.1,
                            lbl_class='caption', 
                            content_class = 'footer_content')
