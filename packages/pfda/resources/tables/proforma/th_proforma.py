@@ -102,10 +102,16 @@ class ViewProforma(BaseComponent):
         return dict(column='id', op='contains', val='')    
 
 class Form(BaseComponent):
-
+    py_requires='gnrcomponents/pagededitor/pagededitor:PagedEditor'
     #definiamo la form con la parte superiore e una parte inferiore
     def th_form(self, form):
-        bc = form.center.borderContainer()
+        #bc = form.center.borderContainer()
+        tc = form.center.tabContainer(selected='.current_tab')
+        bc = tc.borderContainer(title='!![en]<strong>Proforma</strong>')
+        #tc_edit = tc.tabContainer(title='!![en]<strong>Edit PFDA</strong>',region='center',selected='^.tabnumber')
+        tc_print = tc.tabContainer(title='!![en]<strong>Print PFDA</strong>',region='center',selected='^.tabnumber')
+        self.pfdaPDF(tc_print.framePane(title='!![EN]Print PFDA', datapath='#FORM.pdf'))
+       
         #bcleft= form.center.borderContainer(margin='10px',text_align='center')
         #bcleft.contentPane(region='left',width='100px',
          #   background_color='lightyellow').div('Left')
@@ -262,11 +268,24 @@ class Form(BaseComponent):
            #      text_align='center',
            #      padding='4px',
            #      shadow='3px 3px 6px silver')
-
-
-
-     
-   
+       
+    def pfdaPDF(self,frame):
+        self.printDisplay(frame,resource='pfda.proforma:html_res/stampaprof')
+    
+    def printDisplay(self, frame, resource=None, html=None):
+        bar = frame.top.slotBar('10,lett_select,*', height='20px', border_bottom='1px solid silver')
+        bar.lett_select.formbuilder().dbselect('^.curr_letterhead_id',
+                                                table='adm.htmltemplate',
+                                                lbl='Carta intestata',
+                                                hasDownArrow=True)
+        frame.documentFrame(resource=resource,
+                            pkey='^#FORM.pkey',
+                            html=html,
+                            letterhead_id='^.curr_letterhead_id',
+                            missingContent='NO Proforma',
+                            _if='pkey',_delay=100)
+        
+        
     def CostiOrm(self,pane):
         #rightbc = bc.roundedGroup(title='Costi Ormegg')
         #fb = rightbc.formbuilder(cols=2, border_spacing='4px')

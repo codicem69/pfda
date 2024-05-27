@@ -9,7 +9,7 @@ class Main(TableScriptToHtml):
     virtual_columns = '$note_ag,$bank_dt'
     css_requires='grid'
 
-    doc_header_height = 48
+    doc_header_height = 52
     doc_footer_height = 80
     grid_header_height = 5
     grid_row_height = 5
@@ -53,12 +53,20 @@ class Main(TableScriptToHtml):
         r.cell(self.field('data'), lbl='Date', font_size='10pt')
         #r = l.row(height=8)
         r.cell(self.field('protocollo'), lbl='PFDA no.', font_size='10pt')
-        r = l.row(height=8)
+        if len(self.field('@imbarcazione_id.nome')) > 27:
+            h_imb=12
+        else:
+            h_imb=8
+        r = l.row(height=h_imb)
        # r.cell(self.field('@imbarcazione_id.tipo'), lbl='type') and ' ' and r.cell(self.field('@imbarcazione_id.nome), lbl='name')
         r.cell(self.field('@imbarcazione_id.tipo'), lbl='type', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.nome'), lbl='name', font_size='10pt')
         #r = l.row(height=2)
         #r.cell(self.field('@imbarcazione_id.nome'))
-        r = l.row(height=8)
+        if len(self.field('@imbarcazione_id.@flag.nome')) > 22:
+            h_flag=12
+        else:
+            h_flag=8
+        r = l.row(h_flag)
         r.cell(self.field('@imbarcazione_id.@flag.nome'), lbl='Flag', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA', font_size='10pt')
         r = l.row(height=8)
         #r.cell(self.field('@imbarcazione_id.loa'), lbl='LOA')

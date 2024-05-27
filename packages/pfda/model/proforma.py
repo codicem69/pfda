@@ -3,7 +3,8 @@ from gnr.core.gnrdecorator import metadata
 from gnr.core.gnrnumber import floatToDecimal,decimalRound
 from gnr.core.gnrdecorator import public_method
 from gnr.core.gnrbag import Bag
-
+from gnr.web.gnrbaseclasses import TableTemplateToHtml
+from gnr.web.gnrbaseclasses import TableScriptToHtml
 
 class Table(object):
     def config_db(self,pkg):
@@ -406,4 +407,3 @@ class Table(object):
                 record['pathtopdf'] = None
             else:    
                 record['pathtopdf'] = nome_file
-        
