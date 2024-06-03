@@ -85,10 +85,15 @@ class ViewProforma(BaseComponent):
         #con la riga sottostante visualizziamo un bottone che ci fa aprire il pdf contenuto nel pathtopdf
         #r.fieldcell('pathtopdf', width='12em', template="""<button onclick="window.open('/_storage/home/proforma_ranalli/#');">proforma</button>""")
         #con la riga sottostante visualizziamo una lente d'ingradimento che ci fa aprire il pdf contenuto nel pathtopdf
+        ag_id = self.db.currentEnv.get('current_agency_id')
+        tbl_agency =  self.db.table('agz.agency')
+        ag_code = tbl_agency.readColumns(columns='code',
+                  where='$id=:ag_id',
+                    ag_id=ag_id)
         r.cell('apri tab', name="Proforma", width='5em', cellClasses='cellbutton',
                format_buttonclass='icnBaseLens buttonIcon',
-               format_isbutton=True, format_onclick="""var row = this.widget.rowByIndex($1.rowIndex);
-               genro.childBrowserTab('/_storage/home/proforma_ranalli/'+row['pathtopdf'].trim());""")
+               format_isbutton=True, format_onclick=f"""var row = this.widget.rowByIndex($1.rowIndex);
+               genro.childBrowserTab('/_storage/home/proforma_{ag_code}/'+row['pathtopdf'].trim());""")
         
     def th_order(self):
         return 'data:d'
