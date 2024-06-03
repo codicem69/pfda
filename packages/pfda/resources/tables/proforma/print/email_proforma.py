@@ -108,8 +108,14 @@ class Main(BaseResourcePrint):
             else:
                 save_as =  self.page.site.storageNode(self.results['#0']).cleanbasename[9:] 
                 #aggiunto [9:] per avere il record -9 caratteri iniziali
-
-        outputFileNode=self.page.site.storageNode('home:proforma_ranalli', save_as,autocreate=-1)
+        ag_id = self.db.currentEnv.get('current_agency_id')
+        tbl_agency =  self.db.table('agz.agency')
+        ag_code = tbl_agency.readColumns(columns='code',
+                  where='$id=:ag_id',
+                    ag_id=ag_id)
+        #outputFileNode=self.page.site.storageNode('home:proforma_ranalli', save_as,autocreate=-1)
+        outputFileNode=self.page.site.storageNode(f'home:proforma_{ag_code}', save_as,autocreate=-1)
+        #outputFileNode=self.page.site.storageNode('home:proforma_ranalli', save_as,autocreate=-1)
         #outputFileNode=self.page.site.storageNode('/home/tommaso/Documenti/Agenzia/PROFORMA', save_as,autocreate=-1)
         #self.print_options.setItem('zipped', True) # settando il valore zipped a True ottengo un file zippato
         zipped =  self.print_options.get('zipped')
