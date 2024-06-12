@@ -8,7 +8,8 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('tipo')
+        #r.fieldcell('tipo')
+        r.fieldcell('tip_imbarcazione_code')
         r.fieldcell('nome',width='20em')
         r.fieldcell('flag')
         r.fieldcell('loa')
@@ -28,7 +29,8 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
-        fb.field('tipo' )
+        #fb.field('tipo' )
+        fb.field('tip_imbarcazione_code' )
         fb.field('nome' )
         #fb.field('bandiera' )
         fb.field('flag',columns='$nome,$code',auxColumns='$nome', limit=20 )

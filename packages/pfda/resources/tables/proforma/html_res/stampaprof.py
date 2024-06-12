@@ -59,7 +59,7 @@ class Main(TableScriptToHtml):
             h_imb=8
         r = l.row(height=h_imb)
        # r.cell(self.field('@imbarcazione_id.tipo'), lbl='type') and ' ' and r.cell(self.field('@imbarcazione_id.nome), lbl='name')
-        r.cell(self.field('@imbarcazione_id.tipo'), lbl='type', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.nome'), lbl='name', font_size='10pt')
+        r.cell(self.field('@imbarcazione_id.tip_imbarcazione_code'), lbl='type', font_size='10pt') and ' ' and r.cell(self.field('@imbarcazione_id.nome'), lbl='name', font_size='10pt')
         #r = l.row(height=2)
         #r.cell(self.field('@imbarcazione_id.nome'))
         if len(self.field('@imbarcazione_id.@flag.nome')) > 22:
