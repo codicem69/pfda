@@ -3,11 +3,11 @@
 
 from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
-from gnr.core.gnrnumber import decimalRound
 from gnr.core.gnrbag import Bag
 from gnr.web.gnrbaseclasses import TableTemplateToHtml
 from datetime import datetime
 from gnr.core.gnrlang import GnrException
+from gnr.core.gnrnumber import floatToDecimal,decimalRound
 
 class View(BaseComponent):
 
@@ -130,7 +130,7 @@ class Form(BaseComponent):
         self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='150px'))
         self.proformaDett(bc.borderContainer(region='center',datapath='.record'))
 
-        bc = bc.borderContainer(region='right', width='50%', splitter=True)#.borderContainer(region='top', height='50%')
+        bc = bc.borderContainer(region='left', width='40%', splitter=True)#.borderContainer(region='top', height='50%')
         tc = bc.tabContainer(region='center',margin='2px')
         
         #bc = bc(region='center',margin='2px')
@@ -161,27 +161,52 @@ class Form(BaseComponent):
                                                     auxColumns='$email',
                                                     newRecordOnly=False,formResource='Form',
                                                     dialog_height='100px',dialog_width='600px')
-        left = bc.roundedGroup(title='Dati proforma',region='left',width='65%')
-        fb = left.formbuilder(cols=2, border_spacing='4px')
-        fb.field('protocollo',width='8em',readOnly=True)
+        right = bc.roundedGroup(title='Dati proforma',region='right',width='60%')
+        fb = right.formbuilder(cols=2, border_spacing='4px')
+        #onDbChanges in caso di modifica dati su imbarcazione il form arrival viene aggiornato        
+        fb.onDbChanges("""if(dbChanges.some(change=>change.dbevent=='U' && change.pkey==pkey)){this.form.reload()}""",
+            table='pfda.imbarcazione',pkey='=#FORM.record.imbarcazione_id')
+        
+        fb.field('protocollo',width='22em',readOnly=True)
         fb.field('data',width='7em')
         fb.field('imbarcazione_id',width='22em')
         #fb.field('bandiera',width='28em')
-        fb.field('@imbarcazione_id.@flag.codename',width='28em',lbl='!![en]Flag')
-        fb.field('@imbarcazione_id.gt',width='7em')
-        fb.field('@imbarcazione_id.nt',width='7em')
-        fb.field('@imbarcazione_id.loa',width='7em')
+        fb.field('@imbarcazione_id.@flag.codename',width='28em',lbl='!![en]Flag', readOnly=True)
+        fb.field('@imbarcazione_id.gt',width='7em', readOnly=True)
+        fb.field('@imbarcazione_id.nt',width='7em', readOnly=True)
+        fb.field('@imbarcazione_id.loa',width='7em', readOnly=True)
         fb.field('cargo',width='28em' )
+        fb.field('dangerous_cargo', default=False, hidden='^#FORM.record.imbarcazione_id?=#v==null')
        
+        fb.dataRpc('.diritticp', self.calcoloTributi, dangerouscargo='^.dangerous_cargo',imb='^.imbarcazione_id',gt='=#FORM.record.@imbarcazione_id.gt',_if='imb',
+                       _onResult='this.form.save();')
         
+    
+    @public_method
+    def calcoloTributi(self, dangerouscargo=None, gt=None,**kwargs):
+        tbl_tributi=self.db.table('pfda.tributicp')
+        tributi = tbl_tributi.query(columns="$importo,$descrizione",
+                         where='').fetch()
+        for r in tributi:
+            if int(gt) < 250:
+                if r['descrizione'] == '<250':
+                    importo=r['importo']
+            if int(gt) >= 250:
+                if r['descrizione'] == '=>250':
+                    importo=r['importo']    
+        if dangerouscargo == True:
+            importo = importo * 2
+        importo = floatToDecimal(importo) + floatToDecimal(0.50)
+        return importo
+
     
     
     def proformaDett(self,bc):
         #fb = pane.div(margin_left='10px',margin_right='180px').formbuilder(title='Costi Servizi',cols=2, border_spacing='4px',colswidth='30px',fld_width='100%')
                
-        leftdett = bc.roundedGroup(title='Costi servizi',region='left', width='100%')
+        rightdett = bc.roundedGroup(title='Costi servizi',region='right', width='100%')
        
-        fb = leftdett.formbuilder(cols=2, border_spacing='4px',margin='4px')
+        fb = rightdett.formbuilder(cols=2, border_spacing='4px',margin='4px')
         fb.field('pilot',width='5em')
         fb.field('notepilot',width='20em' )
         fb.field('moor',width='5em')
@@ -206,9 +231,9 @@ class Form(BaseComponent):
         fb.field('noteantifire',width='20em' )
         fb.field('tot_servextra',width='5em' )
         fb.br()
-        fb.dbSelect(dbtable='pfda.tributicp',lbl='Scelta TributiCP',auxColumns='$descrizione,$importo',
-                    selected_importo='.diritticp',
-                        hasDownArrow=True)
+        #fb.dbSelect(dbtable='pfda.tributicp',lbl='Scelta TributiCP',auxColumns='$descrizione,$importo',
+        #            selected_importo='.diritticp',
+        #                hasDownArrow=True)
         fb.field('diritticp',width='5em',
                     tooltip="""Sotto GT 250 € 31,00 - da GT 250 in su € 62,00 - Petroliere o Merce pericolosa il Doppio della Tariffa""" )
         fb.br()
@@ -406,7 +431,7 @@ class Form(BaseComponent):
      #       return "$garbageval"
 
     def th_bottom_custom(self, bottom):
-        bar = bottom.slotBar('10,stampa_proforma,5,crea_email,*,10')
+        bar = bottom.slotBar('*,stampa_proforma,5,crea_email,*,10')
         bar.stampa_proforma.button('Stampa Proforma', iconClass='print',
                                     action="""genro.publish("table_script_run",{table:"pfda.proforma",
                                                                                res_type:'print',

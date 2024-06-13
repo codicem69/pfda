@@ -6,22 +6,22 @@ class AppPref(object):
 
     def prefpane_pfda(self,parent,**kwargs):
         tc = parent.tabContainer(margin='2px',**kwargs)
-        self.costi_fissi(tc.borderContainer(title='!!Costi fissi'))
+        #self.costi_fissi(tc.borderContainer(title='!!Costi fissi'))
         self.dati(tc.borderContainer(title='!!Dati'))
-    def costi_fissi(self,pane):    
-        #pane = parent.contentPane(**kwargs)
-        fb = pane.formbuilder(cols=2, border_spacing='4px')
-
-        # Nei **kwargs c'è già il livello di path dati corretto
-        fb.numbertextbox('^.garbage_df', lbl='costo standard garbage',format='#,###.00') 
-        fb.numbertextbox('^.retaingarbage_df', lbl='costo standard deroga garbage',format='#,###.00')
-        fb.numbertextbox('^.isps_df', lbl='costo standard isps',format='#,###.00')
-        fb.numbertextbox('^.misc_df', lbl='costo standard miscellaneous',format='#,###.00')
-        fb.textbox('^.notemisc_df', lbl='note standard miscellaneous', width='60em', colspan=2)
-        fb.numbertextbox('^.bulkauth_df', lbl='costo standard aut. rinfusa',format='#,###.00')
-        fb.br()
-        fb.simpleTextArea('^.notestandard',lbl='Note Standard',width='60em', height='200px',editor=True, colspan=2)
-        fb.br()
+    #def costi_fissi(self,pane):    
+    #    #pane = parent.contentPane(**kwargs)
+    #    fb = pane.formbuilder(cols=2, border_spacing='4px')
+#
+    #    # Nei **kwargs c'è già il livello di path dati corretto
+    #    fb.numbertextbox('^.garbage_df', lbl='costo standard garbage',format='#,###.00') 
+    #    fb.numbertextbox('^.retaingarbage_df', lbl='costo standard deroga garbage',format='#,###.00')
+    #    fb.numbertextbox('^.isps_df', lbl='costo standard isps',format='#,###.00')
+    #    fb.numbertextbox('^.misc_df', lbl='costo standard miscellaneous',format='#,###.00')
+    #    fb.textbox('^.notemisc_df', lbl='note standard miscellaneous', width='60em', colspan=2)
+    #    fb.numbertextbox('^.bulkauth_df', lbl='costo standard aut. rinfusa',format='#,###.00')
+    #    fb.br()
+    #    fb.simpleTextArea('^.notestandard',lbl='Note Standard',width='60em', height='200px',editor=True, colspan=2)
+    #    fb.br()
     def dati(self,pane):
         fb = pane.formbuilder(cols=2, border_spacing='4px')   
         fb.br()
