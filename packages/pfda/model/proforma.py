@@ -16,6 +16,7 @@ class Table(object):
         tbl.column('imbarcazione_id',size='22',name_long='Imbarcazione').relation('imbarcazione.id',relation_name='proforma_imb', mode='foreignkey', onDelete='raise')
         tbl.column('cargo',name_long='Cargo')
         tbl.column('dangerous_cargo', dtype='B', name_long='Dangerous cargo', default=False)
+        tbl.column('tributi', dtype='B', name_long='Disattiva Tributi', default=False)
         tbl.column('pilot',dtype='N',size='10,2',name_long='Pilot',format='#,###.00')
         tbl.column('notepilot',name_long='Note Pilot')
         tbl.column('moor',dtype='N',size='10,2',name_long='Mooringmen',format='#,###.00')

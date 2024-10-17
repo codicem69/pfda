@@ -177,13 +177,13 @@ class Form(BaseComponent):
         fb.field('@imbarcazione_id.loa',width='7em', readOnly=True)
         fb.field('cargo',width='28em' )
         fb.field('dangerous_cargo', default=False, hidden='^#FORM.record.imbarcazione_id?=#v==null')
-       
+        fb.checkbox(value='^.tributi', lbl='Disattiva tributi')
         fb.dataRpc('.diritticp', self.calcoloTributi, dangerouscargo='^.dangerous_cargo',imb='^.imbarcazione_id',gt='=#FORM.record.@imbarcazione_id.gt',_if='imb',
-                       _onResult='this.form.save();')
+                       _onResult='this.form.save();', calc_trib='^.tributi')
         
     
     @public_method
-    def calcoloTributi(self, dangerouscargo=None, gt=None,**kwargs):
+    def calcoloTributi(self, dangerouscargo=None, gt=None,calc_trib=None,**kwargs):
         tbl_tributi=self.db.table('pfda.tributicp')
         tributi = tbl_tributi.query(columns="$importo,$descrizione",
                          where='').fetch()
@@ -197,6 +197,9 @@ class Form(BaseComponent):
         if dangerouscargo == True:
             importo = importo * 2
         importo = floatToDecimal(importo) + floatToDecimal(0.50)
+        if calc_trib == True:
+            importo = None
+            
         return importo
 
     
