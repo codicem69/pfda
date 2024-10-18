@@ -11,3 +11,4 @@ class Table(object):
         tbl.column('email',name_long='Email')
         tbl.column('email_cc',name_long='Email cc')
         tbl.column('note',name_long="Note")
+        tbl.formulaColumn('cliente_full',"$nome || ' - ' || $indirizzo")
