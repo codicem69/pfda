@@ -127,7 +127,7 @@ class Form(BaseComponent):
         #qui sotto bcbmain se voglio inserire un'area nella parte in basso del proforma 
         #bcbmain = bc.borderContainer(region='bottom', height='10%',splitter=True)#.tabContainer(region='center',margin='2px')
 
-        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='150px'))
+        self.proformaTestata(bc.borderContainer(region='top',datapath='.record',height='160px'))
         self.proformaDett(bc.borderContainer(region='center',datapath='.record'))
 
         bc = bc.borderContainer(region='left', width='40%', splitter=True)#.borderContainer(region='top', height='50%')
@@ -167,8 +167,11 @@ class Form(BaseComponent):
         fb.onDbChanges("""if(dbChanges.some(change=>change.dbevent=='U' && change.pkey==pkey)){this.form.reload()}""",
             table='pfda.imbarcazione',pkey='=#FORM.record.imbarcazione_id')
         
-        fb.field('protocollo',width='22em',readOnly=True)
+        fb.field('protocollo',width='22em',readOnly="^#FORM.record.attiva_prot?=!#v")
+        #fb.checkbox(value='^.attiva_prot')
         fb.field('data',width='7em')
+        fb.checkbox(value='^.attiva_prot', label='attiva campo protocollo')
+        fb.br()
         fb.field('imbarcazione_id',width='22em')
         #fb.field('bandiera',width='28em')
         fb.field('@imbarcazione_id.@flag.codename',width='28em',lbl='!![en]Flag', readOnly=True)
@@ -458,7 +461,7 @@ class Form(BaseComponent):
             bar.dataController('alert(msg)', msg='=.messaggio_speciale', _if='msg', _onStart=True)
         
     def th_options(self):
-        return dict(dialog_windowRatio = 1, annotations= True, duplicate=True )
+        return dict(dialog_windowRatio = 1, annotations= True, duplicate=True)
         #return dict(dialog_height='400px', dialog_width='600px', dialog_parentRatio=1 )
 
 

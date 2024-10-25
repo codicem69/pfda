@@ -394,7 +394,8 @@ class Table(object):
 
     #CON LA DUPLICAZIONE DEL RECORD AGGIUNGIAMO AL PROTOCOLLO LA SIGLA _REV
     def onDuplicating(self,record):
-        record['protocollo'] = '%s_rev' %record['protocollo']   
+        record['protocollo'] = '%s_rev' %record['protocollo'] 
+        record['data'] = self.db.workdate
         
 
     def pdfpath(self,proforma_id=None, record=None):
