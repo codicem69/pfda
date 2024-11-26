@@ -199,7 +199,7 @@ class Form(BaseComponent):
                     importo=r['importo']    
         if dangerouscargo == True:
             importo = importo * 2
-        importo = floatToDecimal(importo) + floatToDecimal(0.50)
+        importo = floatToDecimal(importo) + floatToDecimal(self.db.application.getPreference('tax_tributi',pkg='pfda'))
         if calc_trib == True:
             importo = None
             
