@@ -101,7 +101,7 @@ class ProformaManager(object):
 
     def scriviProforma(self):
         
-        self.proforma_record.validate()
+        #self.proforma_record.validate()
         
         self.tblproforma.insert(self.proforma_record.getAttr('proforma'))
 
