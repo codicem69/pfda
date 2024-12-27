@@ -8,6 +8,10 @@ from gnr.web.gnrbaseclasses import TableTemplateToHtml
 from datetime import datetime
 from gnr.core.gnrlang import GnrException
 from gnr.core.gnrnumber import floatToDecimal,decimalRound
+try:
+    from gnrpkg.pfda.proforma.descrittori import ProformaManager, ProformaStruttura
+except:
+    print('ProformaManager/ProformaStruttura NOT imported')
 
 class View(BaseComponent):
 

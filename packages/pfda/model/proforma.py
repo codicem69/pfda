@@ -5,6 +5,7 @@ from gnr.core.gnrdecorator import public_method
 from gnr.core.gnrbag import Bag
 from gnr.web.gnrbaseclasses import TableTemplateToHtml
 from gnr.web.gnrbaseclasses import TableScriptToHtml
+from gnrpkg.pfda.proforma.descrittori import ProformaManager
 
 class Table(object):
     def config_db(self,pkg):
@@ -410,3 +411,15 @@ class Table(object):
                 record['pathtopdf'] = None
             else:    
                 record['pathtopdf'] = nome_file
+
+    @public_method
+    def duplica(self, proforma_id=None,agency_id=None, cargo=None,dangerous_cargo=None,notepilot=None,notemoor=None,notetug=None,agency=None,noteagency=None,
+                customs=None,notecustoms=None,garbage=None,notegarbage=None,retaingarbage=None,noteretaingb=None,isps=None,noteisps=None,misc=None,notemisc=None,
+                bulkauth=None,notebulk=None,noteantifire=None,stamp=None,noteproforma=None):
+        
+        manager = ProformaManager(self.db)
+
+        manager.duplicaProforma(proforma_id,agency_id,cargo,dangerous_cargo,notepilot,notemoor,notetug,agency,noteagency,customs,notecustoms,garbage,
+                                notegarbage,retaingarbage,noteretaingb,isps,noteisps,misc,notemisc,bulkauth,notebulk,noteantifire,stamp,noteproforma)
+        
+        manager.scriviProforma()
