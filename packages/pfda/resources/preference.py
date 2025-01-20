@@ -40,7 +40,7 @@ class AppPref(object):
                     placeholder=True,
                     upload_filename='timbro_societa',
                     upload_folder='site:timbro/image')
-        fb.currencyTextBox('^.tax_tributi', lbl='Costo assa tributi', format='#,###.00')
+        fb.currencyTextBox('^.tax_tributi', lbl='Costo tassa tributi', format='#,###.00')
 
         
     @public_method

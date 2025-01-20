@@ -7,7 +7,7 @@ class Table(object):
         tbl =  pkg.table('ormeggiatori',pkey='id',name_long='ormeggiatori',name_plural='ormeggiatori',caption_field='id')
         self.sysFields(tbl,counter=True)
         tbl.column('proforma_id',size='22',name_long='proforma_id').relation('proforma.id',relation_name='proforma_orm', mode='foreignkey', onDelete='cascade')
-        tbl.column('tariffe_id',size='22',name_long='tariffe ormeggiatori').relation('tariffe.id',relation_name='tariffe_orm', mode='foreignkey', onDelete='raise')
+        tbl.column('tariffe_id',size='22',name_long='tariffe ormeggiatori').relation('tariffe.id',relation_name='tariffe_orm', mode='foreignkey', onDelete='setnull')
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('ovt',dtype='N',size='3',name_long='OVT %')
         tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')

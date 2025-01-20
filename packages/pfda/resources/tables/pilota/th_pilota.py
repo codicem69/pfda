@@ -26,6 +26,20 @@ class View(BaseComponent):
 class ViewFromPilot(BaseComponent):
     def th_struct(self,struct):
         r = struct.view().rows()
+        #r.cell('tariffa_id',name='Tariffe',width='20em', edit=dict(validate_notnull=True,table='pfda.tariffe',tag='dbSelect',
+        #                                    value='^.tariffa_id',
+        #                                    rowcaption='$codice,$descrizione',
+        #                                    auxColumns='@tariffa_tipo_id.descrizione',
+        #                                    columns='$codice',condition=":cod is NULL OR :cod = '' OR $codice LIKE :cod",
+        #                                    condition_cod='%pil%', 
+        #                                    selected_valore='.pu',
+        #                                    hasDownArrow=True))
+        #
+        #r.cell('quantita',name='Quantità',dtype='I',size='3',edit=True)
+        #r.cell('ovt',name='OVT',dtype='N',size='3',edit=True)
+        #r.cell('pu',name='P.U.', dtype='N', size='10,2')
+        #r.cell('tot',name='Totale Pilota', dtype='N', size='10,2',totalize='.sum_tot',formula='quantita*pu+quantita*pu*ovt/100',format='###,###,###.00')
+        #r.fieldcell('totpilot', totalize=True, value='.tot')
         r.fieldcell('tariffe_id', edit=dict(remoteRowController=True,validate_notnull=True,
                                             rowcaption='$codice,$descrizione',
                                             auxColumns='@tariffa_tipo_id.descrizione',
