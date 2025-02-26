@@ -181,7 +181,8 @@ class Main(BaseResourcePrint):
                                                       table='pfda.proforma',
                                                       attachments=attcmt,
                                                       account_id = account_email,
-                                                      template_id=email_template_id)
+                                                      template_id=email_template_id,
+                                                      agency_id=ag_id)
         self.db.commit()
 
     def table_script_options_mail_deliver(self, pane,**kwargs):
