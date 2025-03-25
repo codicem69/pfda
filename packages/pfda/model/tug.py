@@ -1,5 +1,6 @@
 # encoding: utf-8
-
+from gnr.core.gnrnumber import decimalRound
+from gnr.core.gnrlang import GnrException
 
 class Table(object):
     def config_db(self,pkg):
@@ -10,7 +11,7 @@ class Table(object):
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('numero_tug',dtype='I',name_long='Numero Tug')
         tbl.column('ovt',dtype='N',size='3',name_long='OVT %')
-        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')
+        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00',defaultFrom='@tariffe_id.valore')
         tbl.column('tottug',dtype='N',size='10,2',name_long='Totale Tug',format='#,###.00')
 
     def aggiornaTug(self,record):
@@ -28,6 +29,22 @@ class Table(object):
 
     #def trigger_onUpdating(self, record):
     #    self.aggiornaPilota(record)
+    def calcolaPrezziRiga(self, record):
+        pu = self.db.table('pfda.tariffe').readColumns(columns='$valore',pkey=record['tariffe_id'])
+        record['pu'] = pu
+        numero_tug = record.get('numero_tug') 
+        if numero_tug is None or numero_tug == 0:
+            raise GnrException('Inserisci il numero di rimorchiatori')
+        numero_prestazioni = record['quantita']
+        if numero_prestazioni is None or numero_prestazioni == 0:
+            raise GnrException('Inserisci il numero di prestazioni')
+        record['tottug'] = decimalRound(record['quantita'] * record['pu']*record['numero_tug']+decimalRound(record.get('quantita')*record.get('numero_tug')*record.get('pu')*(record.get('ovt') if record.get('ovt') else 0)/100))
+
+    def trigger_onInserting(self, record):
+        self.calcolaPrezziRiga(record)
+
+    def trigger_onUpdating(self, record, old_record=None):
+        self.calcolaPrezziRiga(record)
 
     def trigger_onInserted(self,record=None):
         self.aggiornaTug(record)

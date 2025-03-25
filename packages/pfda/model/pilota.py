@@ -1,6 +1,7 @@
 # encoding: utf-8
 from gnr.core.gnrnumber import decimalRound
 from past.utils import old_div
+from gnr.core.gnrlang import GnrException
 
 class Table(object):
     def config_db(self,pkg):
@@ -11,7 +12,7 @@ class Table(object):
         #tbl.column('tariffa', dtype='T', name_long='Tariffa', name_short='Tariffa')
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('ovt',dtype='N',size='3',name_long='OVT %')
-        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')
+        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00',defaultFrom='@tariffe_id.valore')
         tbl.column('totpilot',dtype='N',size='10,2',name_long='Totale pilota',format='#,###.00')
 
     def aggiornaPilota(self,record):
@@ -19,6 +20,17 @@ class Table(object):
         self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaServizi,
                                     proforma_id=proforma_id,
                                     _deferredId=proforma_id)
+
+    def calcolaPrezziRiga(self, record):
+        pu = self.db.table('pfda.tariffe'
+        ).readColumns(columns='$valore',pkey=record['tariffe_id'])
+        record['pu'] = pu
+        quantita = record.get('quantita') 
+        if quantita is None or quantita == 0:
+            raise GnrException('Inserisci la quantità')
+        record['totpilot'] = decimalRound(record['quantita'] * record['pu']+decimalRound(record.get('quantita')*record.get('pu')*(record.get('ovt') if record.get('ovt') else 0)/100))
+
+
     #def aggiornaPilota(self,record):
     #    proforma_id = record['proforma_id']
     #    self.db.deferToCommit(self.db.table('pfda.proforma').ricalcolaPilota,
@@ -37,6 +49,11 @@ class Table(object):
 #
     #def trigger_onUpdating(self, record, old_record=None):
     #    self.calcolaPrezziRiga(record)
+    def trigger_onInserting(self, record):
+        self.calcolaPrezziRiga(record)
+
+    def trigger_onUpdating(self, record, old_record=None):
+        self.calcolaPrezziRiga(record)
 
     def trigger_onInserted(self,record=None):
         self.aggiornaPilota(record)

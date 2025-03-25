@@ -27,42 +27,42 @@ class ViewFromTug(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('tariffe_id',edit=dict(remoteRowController=True,validate_notnull=True,
+        r.fieldcell('tariffe_id',edit=dict(validate_notnull=True,
                                             rowcaption='$codice,$descrizione',
                                             auxColumns='@tariffa_tipo_id.descrizione',
                                             columns='$codice',
                                             condition=":cod is NULL OR :cod = ''  OR $codice LIKE :cod",
                                             condition_cod='%tug%',
                                             hasDownArrow=True))
-        r.fieldcell('numero_tug',edit=dict(remoteRowController=True))
-        r.fieldcell('quantita',name='Num.prestazioni',width='9em',edit=dict(remoteRowController=True))#, edit=True)
-        r.fieldcell('ovt',edit=dict(remoteRowController=True))#, edit=True)
+        r.fieldcell('numero_tug',edit=True, default=1)
+        r.fieldcell('quantita',name='Num.prestazioni',width='9em',edit=True, default=2)#, edit=True)
+        r.fieldcell('ovt',edit=True)#, edit=True)
         r.fieldcell('pu')
-        r.fieldcell('tottug', totalize=True)
+        r.fieldcell('tottug', totalize=True, formula='pu*quantita*numero_tug+(ovt*quantita*numero_tug*pu/100)')
  
-    @public_method
-    def th_remoteRowController(self,row=None,field=None,**kwargs):
-
-        field = field or 'tariffe_id' #nel caso di inserimento batch il prodotto viene considerato campo primario
-        if not row['tariffe_id']:
-            return row
-        if not row['quantita']:
-            row['quantita'] = 1
-        if not row['numero_tug']:
-            row['numero_tug'] = 1    
-        if not row['ovt']:
-            row['ovt'] = 0    
-        if field == 'tariffe_id':
-            prezzo_unitario = self.db.table('pfda.tariffe').readColumns(columns='$valore',pkey=row['tariffe_id'])
-            row['pu'] = prezzo_unitario  
-        #qt=row['quantita']
-        #pu=row['pu']
-    
-        #totprest = decimalRound(qt * pu)
-        totprest = decimalRound(row['quantita'] * row['numero_tug'] * row['pu'] )
-        ovt = decimalRound(old_div(row['ovt'] * totprest,100))
-        row['tottug'] = decimalRound(totprest + ovt)
-        return row
+    #@public_method
+    #def th_remoteRowController(self,row=None,field=None,**kwargs):
+#
+    #    field = field or 'tariffe_id' #nel caso di inserimento batch il prodotto viene considerato campo primario
+    #    if not row['tariffe_id']:
+    #        return row
+    #    if not row['quantita']:
+    #        row['quantita'] = 1
+    #    if not row['numero_tug']:
+    #        row['numero_tug'] = 1    
+    #    if not row['ovt']:
+    #        row['ovt'] = 0    
+    #    if field == 'tariffe_id':
+    #        prezzo_unitario = self.db.table('pfda.tariffe').readColumns(columns='$valore',pkey=row['tariffe_id'])
+    #        row['pu'] = prezzo_unitario  
+    #    #qt=row['quantita']
+    #    #pu=row['pu']
+    #
+    #    #totprest = decimalRound(qt * pu)
+    #    totprest = decimalRound(row['quantita'] * row['numero_tug'] * row['pu'] )
+    #    ovt = decimalRound(old_div(row['ovt'] * totprest,100))
+    #    row['tottug'] = decimalRound(totprest + ovt)
+    #    return row
 
 class Form(BaseComponent):
 

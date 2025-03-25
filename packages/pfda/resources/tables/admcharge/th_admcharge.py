@@ -27,31 +27,31 @@ class ViewFromAdmcharge(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('tariffe_id',edit=dict(remoteRowController=True,validate_notnull=True,
+        r.fieldcell('tariffe_id',edit=dict(validate_notnull=True,
                                             rowcaption='$codice,$descrizione',
                                             auxColumns='@tariffa_tipo_id.descrizione',
                                             columns='$codice',
                                             condition=":cod is NULL OR :cod = ''  OR $codice LIKE :cod",
                                             condition_cod='%Adm%', hasDownArrow=True))#, edit=True, hasDownArrow=True,rowcaption='$codice,$descrizione')
-        r.fieldcell('quantita',edit=dict(remoteRowController=True))#, edit=True)
+        r.fieldcell('quantita',edit=True, default=1)#, edit=True)
         r.fieldcell('pu')
-        r.fieldcell('totadmcharge', totalize=True)
+        r.fieldcell('totadmcharge', totalize=True, formula='pu*quantita')
  
-    @public_method
-    def th_remoteRowController(self,row=None,field=None,**kwargs):
-
-        field = field or 'tariffe_id' #nel caso di inserimento batch il prodotto viene considerato campo primario
-        if not row['tariffe_id']:
-            return row
-        if not row['quantita']:
-            row['quantita'] = 1
-        
-        if field == 'tariffe_id':
-            prezzo_unitario = self.db.table('pfda.tariffe').readColumns(columns='$valore',pkey=row['tariffe_id'])
-            row['pu'] = prezzo_unitario  
-                
-        row['totadmcharge'] = decimalRound(row['quantita'] * row['pu'] )
-        return row
+    #@public_method
+    #def th_remoteRowController(self,row=None,field=None,**kwargs):
+#
+    #    field = field or 'tariffe_id' #nel caso di inserimento batch il prodotto viene considerato campo primario
+    #    if not row['tariffe_id']:
+    #        return row
+    #    if not row['quantita']:
+    #        row['quantita'] = 1
+    #    
+    #    if field == 'tariffe_id':
+    #        prezzo_unitario = self.db.table('pfda.tariffe').readColumns(columns='$valore',pkey=row['tariffe_id'])
+    #        row['pu'] = prezzo_unitario  
+    #            
+    #    row['totadmcharge'] = decimalRound(row['quantita'] * row['pu'] )
+    #    return row
 
 class Form(BaseComponent):
 

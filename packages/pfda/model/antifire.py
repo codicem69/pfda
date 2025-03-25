@@ -1,4 +1,6 @@
 # encoding: utf-8
+from gnr.core.gnrnumber import decimalRound
+from gnr.core.gnrlang import GnrException
 
 class Table(object):
     def config_db(self,pkg):
@@ -9,7 +11,7 @@ class Table(object):
         tbl.column('quantita',dtype='I',name_long='Quantità')
         tbl.column('ore',dtype='N',size='3',name_long='n. Ore')
         #tbl.column('ovt',dtype='N',size='3',name_long='OVT %')
-        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00')
+        tbl.column('pu', dtype='N', size='10,2', name_long='P.U.',format='#,###.00',defaultFrom='@tariffe_id.valore')
         tbl.column('totantifire',dtype='N',size='10,2',name_long='Totale Antifire',format='#,###.00')
 
     def aggiornaAntifire(self,record):
@@ -29,7 +31,25 @@ class Table(object):
 
     #def trigger_onUpdating(self, record):
     #    self.aggiornaPilota(record)
+    def calcolaPrezziRiga(self, record):
+        pu = self.db.table('pfda.tariffe'
+        ).readColumns(columns='$valore',pkey=record['tariffe_id'])
+        record['pu'] = pu
+        quantita = record.get('quantita') 
+        if quantita is None or quantita == 0:
+            raise GnrException('Inserisci la quantità')
+        ore = record.get('ore') 
+        if ore is None or ore == 0:
+            raise GnrException('Inserisci le ore')
+        
+        record['totantifire'] = decimalRound(record['quantita'] * record['ore'] * record['pu']+decimalRound(record.get('quantita')*record.get('ore')*record.get('pu')*(record.get('ovt') if record.get('ovt') else 0)/100))
 
+    def trigger_onInserting(self, record):
+        self.calcolaPrezziRiga(record)
+
+    def trigger_onUpdating(self, record, old_record=None):
+        self.calcolaPrezziRiga(record)
+        
     def trigger_onInserted(self,record=None):
         self.aggiornaAntifire(record)
 

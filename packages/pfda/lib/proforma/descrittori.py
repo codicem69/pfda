@@ -24,23 +24,23 @@ class ProformaStruttura(GnrStructData):
     
     @valid_children()
     def pilot(self, tariffe_id=None, quantita=None, ovt=None,pu=None,totpilot=None):
-        return self.child('pilot', tariffe_id=tariffe_id, quantita=quantita, ovt=ovt, pu=pu, totpilot=totpilot)
+        return self.child('pilot', tariffe_id=tariffe_id, quantita=quantita, ovt=ovt)#, pu=pu, totpilot=totpilot)
     
     @valid_children()
     def moor(self, tariffe_id=None, quantita=None, ovt=None,pu=None,totmoor=None):
-        return self.child('moor', tariffe_id=tariffe_id, quantita=quantita, ovt=ovt, pu=pu, totmoor=totmoor)
+        return self.child('moor', tariffe_id=tariffe_id, quantita=quantita, ovt=ovt)#, pu=pu, totmoor=totmoor)
     
     @valid_children()
     def tug(self, tariffe_id=None, quantita=None,numero_tug=None, ovt=None,pu=None,tottug=None):
-        return self.child('tug', tariffe_id=tariffe_id, quantita=quantita, numero_tug=numero_tug, ovt=ovt, pu=pu, tottug=tottug)
+        return self.child('tug', tariffe_id=tariffe_id, quantita=quantita, numero_tug=numero_tug, ovt=ovt)#, pu=pu, tottug=tottug)
     
     @valid_children()
     def antifire(self, tariffe_id=None, quantita=None,ore=None, pu=None,totantifire=None):
-        return self.child('antifire', tariffe_id=tariffe_id, quantita=quantita, ore=ore, pu=pu, totantifire=totantifire)
+        return self.child('antifire', tariffe_id=tariffe_id, quantita=quantita, ore=ore)#, pu=pu, totantifire=totantifire)
     
     @valid_children()
     def admcharge(self, tariffe_id=None, quantita=None, pu=None,totadmcharge=None):
-        return self.child('admcharge', tariffe_id=tariffe_id, quantita=quantita, pu=pu, totadmcharge=totadmcharge)
+        return self.child('admcharge', tariffe_id=tariffe_id, quantita=quantita)#, pu=pu, totadmcharge=totadmcharge)
 
 class ProformaManager(object):
     def __init__(self, db):

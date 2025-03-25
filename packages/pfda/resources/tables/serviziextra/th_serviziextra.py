@@ -26,7 +26,7 @@ class ViewFromServiziExtra(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('_row_count', counter=True, name='N.',width='3em')
         r.fieldcell('servizi_id', hasDownArrow=True, edit=True)
-        r.fieldcell('descrizione',width='36em', edit=True)
+        r.fieldcell('descrizione',width='34em', edit=True)
         r.fieldcell('tariffa', edit=True, totalize=True)
     
     def th_order(self):
