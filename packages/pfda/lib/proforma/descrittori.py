@@ -87,8 +87,8 @@ class ProformaManager(object):
         # localizza le righe di questo proforma_corrente perché dobbiamo caricarle nella Struct
         righe_correnti = self.tbltug.query(where='$proforma_id = :pfda_id', pfda_id=proforma_corrente['id']).fetch()
         for riga in righe_correnti: # nella 'struttura' del proforma inserisce le righe usando i dati delle righe originali
-            pfda.tug(tariffe_id=riga['tariffe_id'], quantita=riga['quantita'],numero_tug=proforma_corrente['numero_tug'],ovt=riga['ovt'],pu=riga['pu'],tottug=riga['tottug'] )
-        
+            pfda.tug(tariffe_id=riga['tariffe_id'], quantita=riga['quantita'],numero_tug=riga['numero_tug'],ovt=riga['ovt'],pu=riga['pu'],tottug=riga['tottug'] )
+
         # localizza le righe di questo proforma_corrente perché dobbiamo caricarle nella Struct
         righe_correnti = self.tblantifire.query(where='$proforma_id = :pfda_id', pfda_id=proforma_corrente['id']).fetch()
         for riga in righe_correnti: # nella 'struttura' del proforma inserisce le righe usando i dati delle righe originali

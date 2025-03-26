@@ -34,7 +34,7 @@ class ViewFromOrmeggiatori(BaseComponent):
                                             condition=":cod is NULL OR :cod = ''  OR $codice LIKE :cod",
                                             condition_cod='%orm%', hasDownArrow=True)) #edit=True, hasDownArrow=True,rowcaption='$codice,$descrizione')
         r.fieldcell('quantita', edit=True)#edit=True)
-        r.fieldcell('ovt', edit=True)#edit=True)
+        r.fieldcell('ovt', edit=True,default='0')#edit=True)
         r.fieldcell('pu')
         r.fieldcell('totmoor', totalize=True, formula='pu*quantita+(ovt*quantita*pu/100)')
 

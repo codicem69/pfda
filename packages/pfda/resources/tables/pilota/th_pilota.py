@@ -45,10 +45,11 @@ class ViewFromPilot(BaseComponent):
                                             auxColumns='@tariffa_tipo_id.descrizione',
                                             columns='$codice',condition=":cod is NULL OR :cod = '' OR $codice LIKE :cod",
                                             condition_cod='%pil%', hasDownArrow=True))#, edit=True, hasDownArrow=True,rowcaption='$codice,$descrizione')
-        r.fieldcell('quantita',edit=True)#, edit=True)
-        r.fieldcell('ovt',edit=True)#, edit=True)
+        r.fieldcell('quantita',edit=True,default=1)#, edit=True)
+        r.fieldcell('ovt',edit=True,default='0')#, edit=True)
         r.fieldcell('pu')
-        r.fieldcell('totpilot', totalize='.totale_pilota', formula='pu*quantita+(ovt*quantita*pu/100)')
+        r.fieldcell('totpilot', totalize='.totale_pilota', formula="pu*quantita+(ovt*quantita*pu/100)")
+        #r.fieldcell('totpilot', totalize='.totale_pilota', formula='ovt>=0?pu*quantita+(ovt*quantita*pu/100):pu*quantita')
 
     #@public_method
     #def th_remoteRowController(self,row=None,field=None,**kwargs):

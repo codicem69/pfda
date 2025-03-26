@@ -36,7 +36,7 @@ class ViewFromTug(BaseComponent):
                                             hasDownArrow=True))
         r.fieldcell('numero_tug',edit=True, default=1)
         r.fieldcell('quantita',name='Num.prestazioni',width='9em',edit=True, default=2)#, edit=True)
-        r.fieldcell('ovt',edit=True)#, edit=True)
+        r.fieldcell('ovt',edit=True,default='0')#, edit=True)
         r.fieldcell('pu')
         r.fieldcell('tottug', totalize=True, formula='pu*quantita*numero_tug+(ovt*quantita*numero_tug*pu/100)')
  
