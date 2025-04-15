@@ -97,7 +97,9 @@ class ProformaManager(object):
         # localizza le righe di questo proforma_corrente perché dobbiamo caricarle nella Struct
         righe_correnti = self.tbladmcharge.query(where='$proforma_id = :pfda_id', pfda_id=proforma_corrente['id']).fetch()
         for riga in righe_correnti: # nella 'struttura' del proforma inserisce le righe usando i dati delle righe originali
-            pfda.admcharge(tariffe_id=riga['tariffe_id'], quantita=riga['quantita'],pu=riga['pu'],totadmcharge=riga['totadmcharge'] )
+            if riga['tariffe_id']:
+                pfda.admcharge(tariffe_id=riga['tariffe_id'], quantita=riga['quantita'],pu=riga['pu'],totadmcharge=riga['totadmcharge'] )
+
 
     def scriviProforma(self):
         
