@@ -125,7 +125,7 @@ class Main(TableScriptToHtml):
         if self.record['tug'] or self.record['notetug']:
             righe.append(dict(descrizione_servizio='Tug', descrizione=self.record['notetug'],tariffa=self.record['tug']))
         if self.record['agency'] or self.record['noteagency']:
-            righe.append(dict(descrizione_servizio='Agency fees', descrizione=self.record['noteagency'],tariffa=self.record['agency']))
+            righe.append(dict(descrizione_servizio='Maritime recommendation activities', descrizione=self.record['noteagency'],tariffa=self.record['agency']))
         if self.record['customs'] or self.record['notecustoms']:
             righe.append(dict(descrizione_servizio='Customs clearance', descrizione=self.record['notecustoms'],tariffa=self.record['customs']))    
         if self.record['garbage'] or self.record['notegarbage']:
@@ -229,7 +229,7 @@ class Main(TableScriptToHtml):
   #      n_rows_nome_provincia = len(self.rowField('_sigla_provincia_nome'))//nome_offset + 1
         #In caso di valori in relazione, è necessario utilizzare "_" nel metodo rowField per recuperare correttamente i valori
         #A tal proposito si consiglia comunque sempre di utilizzare le aliasColumns
-        n_rows = max(n_rows_nome_service,n_rows_nome_descr,n_rows_nome_tariffa )#, n_rows_nome_provincia)
+        n_rows = max(n_rows_nome_descr,n_rows_nome_tariffa )#, n_rows_nome_provincia)
         height = (self.grid_row_height * n_rows)
         return height
 

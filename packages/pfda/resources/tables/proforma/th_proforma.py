@@ -105,11 +105,9 @@ class ViewProforma(BaseComponent):
     def th_query(self):
         return dict(column='protocollo', op='contains', val='')
 
- 
-
     def th_query(self):
         return dict(column='id', op='contains', val='')    
-
+        
 class Form(BaseComponent):
     py_requires='gnrcomponents/pagededitor/pagededitor:PagedEditor'
     #definiamo la form con la parte superiore e una parte inferiore
